@@ -949,7 +949,7 @@ Fixpoint convert_bin_nat( b : bin) : nat :=
   match b with
     | Z => O
     | T b' => 2 *  (convert_bin_nat b' )
-    | K b' => 2 *  (convert_bin_nat b') + 1
+    | K b' => S (2 * (convert_bin_nat b'))
 end.
 
 Example test_bin_1: ( convert_bin_nat  Z) = O.

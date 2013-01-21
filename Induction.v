@@ -107,7 +107,24 @@ Qed.
 Theorem andb_true_elim2 : forall b c : bool,
   andb b c = true -> c = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros b c.
+  destruct b, c.
+  Case "b = true & c = true".
+     reflexivity.
+  Case "b = true & c = false".
+     simpl.
+     intros Ha.
+     rewrite -> Ha.
+     reflexivity.
+  Case "b = false & c = true".
+     reflexivity.
+  Case "b = false & c = false".
+     simpl.
+     intros Hb.
+     rewrite -> Hb.
+     reflexivity.
+   Qed.
+
 (** [] *)
 
 (** There are no hard and fast rules for how proofs should be
@@ -218,22 +235,55 @@ Proof.
 Theorem mult_0_r : forall n:nat,
   n * 0 = 0.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [| n' ].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n'".
+    simpl.
+    rewrite -> IHn'.
+    reflexivity.
+  Qed.
 
 Theorem plus_n_Sm : forall n m : nat, 
   S (n + m) = n + (S m).
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros n m. induction n as [| n' ].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n'".
+    simpl.
+    rewrite -> IHn'.
+    reflexivity.
+  Qed.
 
 Theorem plus_comm : forall n m : nat,
   n + m = m + n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m. induction n as [| n' ].
+  Case "n = 0".
+    simpl.
+    rewrite -> plus_0_r.
+    reflexivity.
+  Case "n = S n'".
+    rewrite <- plus_n_Sm.
+    simpl.
+    rewrite -> IHn'.
+    reflexivity.
+  Qed.
 
 Theorem plus_assoc : forall n m p : nat,
   n + (m + p) = (n + m) + p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  induction n as [| n' ].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n'".
+    simpl.
+    rewrite <- IHn'.
+    reflexivity.
+  Qed.
+
 (** [] *)
 
 (** **** Exercise: 2 stars (double_plus) *)
@@ -250,7 +300,17 @@ Fixpoint double (n:nat) :=
 
 Lemma double_plus : forall n, double n = n + n .
 Proof.  
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [| n' ].
+  Case "n = 0".
+    reflexivity.
+  Case "n = S n'".
+    simpl.
+    rewrite <- plus_comm.
+    rewrite -> IHn'.
+    reflexivity.
+  Qed.
+  
+ 
 (** [] *)
 
 
@@ -258,7 +318,10 @@ Proof.
 (** Briefly explain the difference between the tactics
     [destruct] and [induction].  
 
-(* FILL IN HERE *)
+(* Destruct is a case of induction where we do not need
+  the induction hypothesis to prove later cases. Anything
+  that can be proved using destruct can be proved using induction,
+  but it might be overkill. *)
 
 *)
 (** [] *)
@@ -348,18 +411,43 @@ Proof.
 Theorem plus_swap : forall n m p : nat, 
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p.
+  rewrite -> plus_comm.
+  assert (H: p + n = n + p).
+    Case "Proof of assertion".
+    rewrite -> plus_comm.
+    reflexivity.
+  rewrite <- H.
+  rewrite -> plus_assoc.
+  reflexivity.  Qed.
 
 
 (** Now prove commutativity of multiplication.  (You will probably
     need to define and prove a separate subsidiary theorem to be used
     in the proof of this one.)  You may find that [plus_swap] comes in
     handy. *)
-
+  
+  
 Theorem mult_comm : forall m n : nat,
  m * n = n * m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m. induction n as [| n' ].
+  Case "n = 0".
+    simpl.
+    rewrite -> mult_0_r.
+    reflexivity.
+  Case "n = S n'".
+    induction m as [| m' ].
+    simpl.
+    rewrite -> mult_0_r.
+    reflexivity.
+    simpl.
+    rewrite -> IHn'.
+    simpl.
+    rewrite -> plus_swap.
+    rewrite <- IHm'.
+    simpl.
+    Admitted. 
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (evenb_n__oddb_Sn) *)
@@ -369,7 +457,7 @@ Proof.
 Theorem evenb_n__oddb_Sn : forall n : nat,
   evenb n = negb (evenb (S n)).
 Proof.
-  (* FILL IN HERE *) Admitted.
+   (* FILL IN HERE *) Admitted.
 (** [] *)
 
 (* ###################################################################### *)
@@ -465,8 +553,21 @@ Proof.
     that these functions commute -- that is, incrementing a binary
     number and then converting it to unary yields the same result as
     first converting it to unary and then incrementing. *)
+Theorem binary_commute : forall n : bin,
+     S ( convert_bin_nat n) = convert_bin_nat (increment n).
+Proof.
+  intros n.
+  induction n as [|n'| np'].
+  Case "n = 0".
+    reflexivity.
+  Case "n = K n'".
+    simpl.
+    rewrite <- IHn'.
+    rewrite -> plus_assoc.
+    rewrite -> plus_assoc.
+    simpl.
 
-(* FILL IN HERE *)
+
 (** [] *)
 
 
