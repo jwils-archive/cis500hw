@@ -802,13 +802,33 @@ Proof.
 Theorem app_nil_end : forall l : natlist, 
   l ++ [] = l.   
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros l. induction l as [ | h t].
+  Case "l = []".
+    reflexivity.
+  Case "l = h :: t".
+    simpl. rewrite -> IHt.
+    reflexivity. Qed.
 
+Lemma rev_snoc : forall h : natlist, forall t : nat,
+  rev (snoc h t) = t :: rev h.
+  Proof.
+    intros h t. induction h as [ | h' t'].
+    Case "l = []".
+      simpl. reflexivity.
+    Case "l = h :: t".
+      simpl. rewrite -> IHt'.
+      simpl. reflexivity. Qed.
 
 Theorem rev_involutive : forall l : natlist,
   rev (rev l) = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros l. induction l as [ | h t].
+  Case "l = []".
+    reflexivity.
+  Case "l = h :: t".
+    simpl. rewrite -> rev_snoc.
+    rewrite -> IHt. reflexivity.
+    Qed.
 
 (** There is a short solution to the next exercise.  If you find
     yourself getting tangled up, step back and try to look for a
