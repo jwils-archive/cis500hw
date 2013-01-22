@@ -566,6 +566,8 @@ Proof.
     rewrite -> plus_assoc.
     rewrite -> plus_assoc.
     simpl.
+  Admitted.
+
 
 
 (** [] *)
