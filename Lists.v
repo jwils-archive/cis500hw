@@ -842,13 +842,34 @@ Proof.
 Theorem snoc_append : forall (l:natlist) (n:nat),
   snoc l n = l ++ [n].
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros l n. induction l as [| l' n'].
+  Case "l = []".
+    reflexivity.
+  Case "l = l' :: n'". 
+    simpl.
+    rewrite -> IHn'.
+    reflexivity.
+  Qed.
 
 
 Theorem distr_rev : forall l1 l2 : natlist,
   rev (l1 ++ l2) = (rev l2) ++ (rev l1).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros l1 l2. induction l1 as [| h t].
+  Case "l1 = []".
+    simpl.
+    rewrite -> app_nil_end.
+    reflexivity.
+  Case "l1 = h :: t".
+    simpl.
+    rewrite -> IHt.
+    simpl.
+    rewrite -> snoc_append.
+    rewrite -> app_ass.
+    rewrite -> snoc_append.
+    reflexivity.
+    Qed.
+      
 
 (** An exercise about your implementation of [nonzeros]: *)
 
