@@ -269,14 +269,16 @@ Example test_oddmembers:            oddmembers [0,1,0,2,3,0,0] = [1,3].
   simpl. reflexivity. Qed.
 
 Fixpoint countoddmembers (l:natlist) : nat :=
-  (* FILL IN HERE *) admit.
+  length (oddmembers l).
 
 Example test_countoddmembers1:    countoddmembers [1,0,3,1,4,5] = 4.
- (* FILL IN HERE *) Admitted.
+  simpl. reflexivity. Qed.
+
 Example test_countoddmembers2:    countoddmembers [0,2,4] = 0.
- (* FILL IN HERE *) Admitted.
+  simpl. reflexivity. Qed.
+
 Example test_countoddmembers3:    countoddmembers nil = 0.
- (* FILL IN HERE *) Admitted.
+  simpl. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (alternate) *)
