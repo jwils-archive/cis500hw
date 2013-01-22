@@ -419,7 +419,38 @@ Example test_subset2:              subset [1,2,2] [2,1,4,1] = false.
     you haven't learned yet.  Feel free to ask for help if you get
     stuck! *)
 
-(* FILL IN HERE *)
+
+Theorem beq_n_n: forall (n : nat),
+  beq_nat n n = true.
+  Proof.
+    intros n. induction n as [ | n'].
+    Case "n = 0".
+      simpl. reflexivity.
+    Case "n = S n'".
+      simpl. rewrite -> IHn'. reflexivity. Qed.
+
+Theorem minus_zero: forall (n : nat),
+  n - 0 = n.
+  Proof.
+    intros n. destruct n as [ | n'].
+    Case "n = 0".
+      simpl. reflexivity.
+    Case "n = S n'".
+      simpl. reflexivity. Qed.
+
+Theorem my_theorem: forall (n : nat) (b : bag),
+  count n b = count n (add n b) - 1.
+  Proof.
+    intros n. intros b.
+    induction b as [ | h t].
+    Case "b = nil".
+      simpl.
+      rewrite -> beq_n_n. reflexivity.
+    Case "b = h : t".
+      simpl. rewrite -> beq_n_n. simpl.
+      rewrite -> minus_zero.
+      reflexivity. Qed.
+
 (** [] *)
 
 (* ###################################################### *)
