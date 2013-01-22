@@ -260,10 +260,13 @@ Example test_nonzeros:            nonzeros [0,1,0,2,3,0,0] = [1,2,3].
   simpl. reflexivity. Qed.
 
 Fixpoint oddmembers (l:natlist) : natlist :=
-  (* FILL IN HERE *) admit.
+  match l with
+  | nil => nil
+  | h :: t => if evenb h then oddmembers t else h :: (oddmembers t)
+  end.
 
 Example test_oddmembers:            oddmembers [0,1,0,2,3,0,0] = [1,3].
- (* FILL IN HERE *) Admitted.
+  simpl. reflexivity. Qed.
 
 Fixpoint countoddmembers (l:natlist) : nat :=
   (* FILL IN HERE *) admit.
