@@ -364,12 +364,12 @@ Example test_add2:                count 5 (add 1 [1,4,1]) = 0.
   simpl. reflexivity. Qed.
 
 Definition member (v:nat) (s:bag) : bool := 
-  (* FILL IN HERE *) admit.
+  if beq_nat (count v s) 0 then false else true. 
 
 Example test_member1:             member 1 [1,4,1] = true.
- (* FILL IN HERE *) Admitted.
+  simpl. reflexivity. Qed.
 Example test_member2:             member 2 [1,4,1] = false.
- (* FILL IN HERE *) Admitted.
+  simpl. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (bag_more_functions) *)
