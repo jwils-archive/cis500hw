@@ -907,7 +907,16 @@ Proof.
      - Write down a non-trivial theorem involving [cons]
        ([::]), [snoc], and [append] ([++]).  
      - Prove it. *) 
-
+Theorem list_design : forall (l1 l2 : natlist) (n : nat),
+  n :: (l1 ++ l2) = rev (snoc ((rev l2) ++ (rev l1)) n).
+Proof.
+  intros l1 l2 n.
+  rewrite <- distr_rev.
+  rewrite -> rev_snoc.
+  rewrite -> rev_involutive.
+  reflexivity.
+  Qed.
+  
 
 
 (** **** Exercise: 3 stars, advanced (bag_proofs) *)
