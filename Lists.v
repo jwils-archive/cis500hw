@@ -1149,8 +1149,6 @@ Proof.
   Qed.
 (** [] *)
 
-
-
 End Dictionary.
 
 End NatList.
