@@ -426,18 +426,56 @@ Proof.
     need to define and prove a separate subsidiary theorem to be used
     in the proof of this one.)  You may find that [plus_swap] comes in
     handy. *)
-  
-  
+
+Lemma will_use : forall m n : nat,
+  S(S(m + n)) = S ( m + S ( n)).
+Proof.
+        intros m n.
+        induction m as [| m'].
+        reflexivity.
+        simpl.
+        assert(H2 : m' + S n = S n + m').
+        rewrite -> plus_comm.
+        reflexivity.
+        rewrite -> H2.
+        simpl.
+        rewrite -> plus_comm.
+        reflexivity.
+Qed.
+
+Lemma mullt_pull_succ : forall m n : nat,
+   m * S n = m + m * n.
+Proof.
+  intros m n. induction m as [| m'].
+  Case "n = 0".
+    simpl.
+    reflexivity.
+  Case "n = S n'".
+      destruct n.
+      simpl.
+      rewrite -> mult_0_r.
+      rewrite -> IHm'.
+      rewrite -> mult_0_r.
+      rewrite -> plus_0_r.
+      reflexivity.
+      simpl.
+      rewrite -> IHm'.
+      rewrite -> plus_swap.
+      rewrite <- will_use.
+      simpl.
+      reflexivity.
+Qed.
+
 Theorem mult_comm : forall m n : nat,
  m * n = n * m.
 Proof.
-  intros n m. induction n as [| n' ].
+  intros n m. induction n as [| n'].
   Case "n = 0".
-    simpl.
     rewrite -> mult_0_r.
     reflexivity.
   Case "n = S n'".
-    induction m as [| m' ].
+    simpl.
+    induction m as [| m'].
     simpl.
     rewrite -> mult_0_r.
     reflexivity.
@@ -445,9 +483,16 @@ Proof.
     rewrite -> IHn'.
     simpl.
     rewrite -> plus_swap.
-    rewrite <- IHm'.
+    rewrite -> plus_assoc.
     simpl.
-    Admitted. 
+    rewrite -> mullt_pull_succ.
+    rewrite -> plus_assoc.
+    reflexivity.
+Qed.
+    
+    
+    
+ 
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (evenb_n__oddb_Sn) *)
