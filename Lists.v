@@ -1072,19 +1072,33 @@ Proof.
     yields [true] for every list [l]. *)
 
 Fixpoint beq_natlist (l1 l2 : natlist) : bool :=
-  (* FILL IN HERE *) admit.
+  match l1 with 
+    | nil => beq_nat (length l2) 0
+    | h :: t => andb (beq_nat (length l1) (length l2)) (andb (beq_nat (hd 0 l2) h) (beq_natlist t (tail l2)))
+  end. 
 
 Example test_beq_natlist1 :   (beq_natlist nil nil = true).
- (* FILL IN HERE *) Admitted.
+  reflexivity. Qed.
 Example test_beq_natlist2 :   beq_natlist [1,2,3] [1,2,3] = true.
- (* FILL IN HERE *) Admitted.
+ reflexivity. Qed.
 Example test_beq_natlist3 :   beq_natlist [1,2,3] [1,2,4] = false.
- (* FILL IN HERE *) Admitted.
+ reflexivity. Qed.
+Example test_beq_natlist4 :   beq_natlist [1,2,3,0,0] [1,2,3] = false.
+ reflexivity. Qed.
 
 Theorem beq_natlist_refl : forall l:natlist,
   true = beq_natlist l l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros l. induction l as [| h t].
+  Case "l = []".
+    reflexivity.
+  Case "l = h ::t".
+    simpl.
+    rewrite -> beq_n_n.
+    rewrite -> beq_n_n.
+    rewrite <- IHt.
+    reflexivity.
+   Qed.
 (** [] *)
 
 (* ###################################################### *)
