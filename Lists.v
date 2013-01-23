@@ -438,7 +438,7 @@ Theorem minus_zero: forall (n : nat),
     Case "n = S n'".
       simpl. reflexivity. Qed.
 
-Theorem my_theorem: forall (n : nat) (b : bag),
+Theorem bag_theorem: forall (n : nat) (b : bag),
   count n b = count n (add n b) - 1.
   Proof.
     intros n. intros b.
