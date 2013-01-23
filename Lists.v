@@ -429,7 +429,7 @@ Theorem beq_n_n: forall (n : nat),
     Case "n = S n'".
       simpl. rewrite -> IHn'. reflexivity. Qed.
 
-Theorem minus_zero: forall (n : nat),
+Lemma minus_zero: forall (n : nat),
   n - 0 = n.
   Proof.
     intros n. destruct n as [ | n'].
@@ -908,8 +908,7 @@ Proof.
        ([::]), [snoc], and [append] ([++]).  
      - Prove it. *) 
 
-(* FILL IN HERE *)
-(** [] *)
+
 
 (** **** Exercise: 3 stars, advanced (bag_proofs) *)
 (** Here are a couple of little theorems to prove about your
