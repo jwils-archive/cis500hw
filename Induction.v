@@ -1,3 +1,7 @@
+(* Ayaka Nonaka and Joshua Wilson
+   We both worked on the assignment for 7 hours-ish.
+   mult_comm was painful :( *)
+
 (** * Induction: Proof by Induction *)
  
 
@@ -427,8 +431,8 @@ Proof.
     in the proof of this one.)  You may find that [plus_swap] comes in
     handy. *)
 
-Lemma will_use : forall m n : nat,
-  S(S(m + n)) = S ( m + S ( n)).
+Lemma Smn_mSn : forall m n : nat,
+  S (m + n)  = m + (S n).
 Proof.
         intros m n.
         induction m as [| m'].
@@ -443,26 +447,28 @@ Proof.
         reflexivity.
 Qed.
 
-Lemma mullt_pull_succ : forall m n : nat,
+Lemma factor_out : forall m n : nat,
    m * S n = m + m * n.
 Proof.
   intros m n. induction m as [| m'].
-  Case "n = 0".
+  Case "m = 0".
     simpl.
     reflexivity.
-  Case "n = S n'".
-      destruct n.
-      simpl.
-      rewrite -> mult_0_r.
-      rewrite -> IHm'.
-      rewrite -> mult_0_r.
-      rewrite -> plus_0_r.
-      reflexivity.
-      simpl.
-      rewrite -> IHm'.
-      rewrite -> plus_swap.
-      rewrite <- will_use.
-      simpl.
+  Case "m = S m'".
+      destruct n as [| n'].
+      SCase "n = 0".
+        simpl.
+        rewrite -> mult_0_r.
+        rewrite -> IHm'.
+        rewrite -> mult_0_r.
+        rewrite -> plus_0_r.
+        reflexivity.
+      SCase "n = S n'".
+        simpl.
+        rewrite -> IHm'.
+        rewrite -> plus_swap.
+        rewrite <- Smn_mSn.
+        simpl.
       reflexivity.
 Qed.
 
@@ -476,18 +482,20 @@ Proof.
   Case "n = S n'".
     simpl.
     induction m as [| m'].
-    simpl.
-    rewrite -> mult_0_r.
-    reflexivity.
-    simpl.
-    rewrite -> IHn'.
-    simpl.
-    rewrite -> plus_swap.
-    rewrite -> plus_assoc.
-    simpl.
-    rewrite -> mullt_pull_succ.
-    rewrite -> plus_assoc.
-    reflexivity.
+    SCase "m = 0".
+      simpl.
+      rewrite -> mult_0_r.
+      reflexivity.
+     SCase "m = S m'".
+      simpl.
+      rewrite -> IHn'.
+      simpl.
+      rewrite -> plus_swap.
+      rewrite -> plus_assoc.
+      simpl.
+      rewrite -> factor_out.
+      rewrite -> plus_assoc.
+      reflexivity.
 Qed.
     
     
@@ -628,7 +636,7 @@ Lemma SSnn_SnSn : forall n : nat,
     Qed.
 
 Theorem binary_commute : forall n : bin,
-     S ( convert_bin_nat n) = convert_bin_nat (increment n).
+     S (convert_bin_nat n) = convert_bin_nat (increment n).
 Proof.
   intros n.
   induction n as [|n'| np'].

@@ -1,4 +1,8 @@
-(** * Lists: Working with Structured Data *)
+(* Ayaka Nonaka and Joshua Wilson
+   We both worked on the assignment for 7 hours-ish.
+   mult_comm was painful :( *)
+
+(** * Lists: Working with Structured Data *
 
 Require Export Induction.
 
