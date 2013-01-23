@@ -2,7 +2,7 @@
    We both worked on the assignment for 7 hours-ish.
    mult_comm was painful :( *)
 
-(** * Lists: Working with Structured Data *
+(** * Lists: Working with Structured Data *)
 
 Require Export Induction.
 
