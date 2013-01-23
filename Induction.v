@@ -570,6 +570,18 @@ Proof.
     that these functions commute -- that is, incrementing a binary
     number and then converting it to unary yields the same result as
     first converting it to unary and then incrementing. *)
+
+Lemma SSnn_SnSn : forall n : nat,
+  S (S (n + n)) = (S n) + (S n).
+  Proof.
+    intros n. induction n as [| n'].
+    Case "n = 0".
+      reflexivity.
+    Case "n = S n".
+      rewrite -> plus_n_Sm.
+      simpl. reflexivity.
+    Qed.
+
 Theorem binary_commute : forall n : bin,
      S ( convert_bin_nat n) = convert_bin_nat (increment n).
 Proof.
@@ -579,13 +591,17 @@ Proof.
     reflexivity.
   Case "n = K n'".
     simpl.
+    rewrite -> plus_assoc.
+    rewrite -> plus_assoc.
     rewrite <- IHn'.
-    rewrite -> plus_assoc.
-    rewrite -> plus_assoc.
+    rewrite -> plus_0_r.
+    rewrite -> plus_0_r.
     simpl.
-  Admitted.
-
-
+    rewrite -> SSnn_SnSn.
+    reflexivity.
+  Case "n = T np'".
+    simpl. reflexivity.
+  Qed.
 
 (** [] *)
 
