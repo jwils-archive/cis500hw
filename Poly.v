@@ -167,7 +167,11 @@ Inductive grumble (X:Type) : Type :=
       - [e mumble (b c 0)]
       - [e bool (b c 0)]
       - [c] 
-(* FILL IN HERE *)
+(* 
+  [e bool true]
+  [d bool (b a 5)]
+  [d mumble (b a 5)]
+   *)
 [] *)
 
 (** **** Exercise: 2 stars (baz_num_elts) *)
