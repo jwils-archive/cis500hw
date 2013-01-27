@@ -350,7 +350,7 @@ Notation "x ++ y" := (app x y)
 Definition list123''' := [1, 2, 3].
 
 (* ###################################################### *)
-(** *** Exercises: Polymorphic Lists *)
+(** *** ExercisesExercises: Polymorphic Lists *)
 
 (** **** Exercise: 2 stars, optional (poly_exercises) *)
 (** Here are a few simple exercises, just like ones in the [Lists]
@@ -474,9 +474,15 @@ Fixpoint combine' {X Y : Type} (lx : list X) (ly : list Y)
     Uncomment the material below and fill in the definition of
     [split].  Make sure it passes the given unit tests. *)
 
-(* 
-Fixpoint split
-  (* FILL IN HERE *)
+
+Fixpoint split {X Y : Type} (li : list (X * Y) ) 
+              : ((list X) * (list Y)) := 
+  match li with
+  | [] => ( [], [])
+  | h :: t => ( (fst h :: fst (split t)) , snd h :: snd (split t))
+ end.
+      
+       
 
 Example test_split:
   split [(1,false),(2,false)] = ([1,2],[false,false]).
