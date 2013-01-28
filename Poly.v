@@ -182,7 +182,7 @@ Inductive baz : Type :=
    | y : baz -> bool -> baz.
 
 (** How _many_ elements does the type [baz] have? 
-(* None. *)
+(* None *)
 [] *)
 
 End MumbleBaz.
@@ -735,15 +735,15 @@ Proof. reflexivity.  Qed.
     7. *)
 
 Definition filter_even_gt7 (l : list nat) : list nat :=
-  (* FILL IN HERE *) admit.
+  filter (fun n => negb (ble_nat n 7)) (filter (fun n => evenb n) l).
 
 Example test_filter_even_gt7_1 :
   filter_even_gt7 [1,2,6,9,10,3,12,8] = [10,12,8].
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 
 Example test_filter_even_gt7_2 :
   filter_even_gt7 [5,2,6,19,129] = [].
- (* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars (partition) *)
