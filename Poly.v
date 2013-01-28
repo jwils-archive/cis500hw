@@ -810,10 +810,31 @@ Proof. reflexivity.  Qed.
 (** Show that [map] and [rev] commute.  You may need to define an
     auxiliary lemma. *)
 
+Lemma map_snoc : forall (X Y : Type) (f : X -> Y) (xs : list X) (x : X),
+  map f (snoc xs x) = snoc (map f xs) (f x).
+Proof.
+  intros X Y f xs x.
+  induction xs as [| h t].
+  Case "xs = []".
+    reflexivity.
+  Case "xs = h :: t".
+    simpl.
+    rewrite -> IHt.
+    reflexivity.
+  Qed.
+
 Theorem map_rev : forall (X Y : Type) (f : X -> Y) (l : list X),
   map f (rev l) = rev (map f l).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros X Y f l.
+  induction l as [| h t].
+  Case "l = []".
+    reflexivity.
+  Case "l = h :: t".
+    simpl.
+    rewrite <- IHt.
+    apply map_snoc.
+  Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars (flat_map) *)
