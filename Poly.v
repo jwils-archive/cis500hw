@@ -1,3 +1,5 @@
+(* Ayaka Nonaka & Josh Wilson [both 3 hours]*)
+
 (** * Poly: Polymorphism and Higher-Order Functions *)
 
 (** In this chapter we continue our development of basic 
