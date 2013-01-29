@@ -488,7 +488,7 @@ Fixpoint split {X Y : Type} (li : list (X * Y) )
   match li with
   | [] => ( [], [])
   | h :: t => ( (fst h :: fst (split t)) , snd h :: snd (split t))
- end.
+  end.
       
        
 
