@@ -985,7 +985,13 @@ Proof. reflexivity. Qed.
 Theorem override_example : forall (b:bool),
   (override (constfun b) 3 true) 2 = b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros b.
+  destruct b.
+  Case "b = true".
+    reflexivity.
+  Case "b = false".
+    reflexivity.
+  Qed.
 (** [] *)
 
 (** We'll use function overriding heavily in parts of the rest of the
