@@ -173,8 +173,14 @@ Inductive grumble (X:Type) : Type :=
   [e bool true]
   [d bool (b a 5)]
   [d mumble (b a 5)]
+  [e mumble (b c 0)]
    *)
 [] *)
+
+Check e bool true.
+Check d bool (b a 5).
+Check d mumble (b a 5).
+Check e mumble (b c 0).
 
 (** **** Exercise: 2 stars (baz_num_elts) *)
 (** Consider the following inductive definition: *)
