@@ -1106,12 +1106,26 @@ Proof.
     below. *)
 
 Definition fold_map {X Y:Type} (f : X -> Y) (l : list X) : list Y :=
-(* FILL IN HERE *) admit.
+  
+  fold (fun x xs => (f x) :: xs) l [].
 
 (** Write down a theorem in Coq stating that [fold_map] is correct,
     and prove it. *)
 
-(* FILL IN HERE *)
+Theorem fold_map_eq_map : forall X Y (f : X -> Y) (l : list X),
+  map f l = fold_map f l.
+Proof.
+  intros X Y f l.
+  induction l as [| h t].
+  Case "l = []".
+    reflexivity.
+  Case "l = h :: t".
+    simpl.
+    rewrite -> IHt.
+    unfold fold_map.
+    simpl.
+    reflexivity.
+  Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, advanced (index_informal) *)
