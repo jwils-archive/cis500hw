@@ -640,7 +640,26 @@ Theorem index_after_last: forall (n : nat) (X : Type) (l : list X),
      length l = n ->
      index (S n) l = None.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n X l.
+  generalize dependent n.
+  generalize dependent X.
+  induction l as [| h t].
+  Case "l = []".
+    reflexivity.
+  Case "l = h :: t".
+    intros n.
+    destruct n as [| n'].
+    SCase "n = 0".
+      simpl.
+      intros A.
+      inversion A.
+    SCase "n = S n'".
+      simpl.
+      intros A.
+      inversion A.
+      apply IHt.
+      reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced, optional (index_after_last_informal) *)
