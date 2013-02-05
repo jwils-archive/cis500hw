@@ -230,7 +230,9 @@ Example sillyex2 : forall (X : Type) (x y z : X) (l j : list X),
      y :: l = z :: j ->
      x = z.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros X x y z l j A B.
+  inversion A.
+Qed.
 (** [] *)
 
 (** While the injectivity of constructors allows us to reason
