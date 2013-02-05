@@ -861,7 +861,42 @@ Theorem bool_fn_applied_thrice :
   forall (f : bool -> bool) (b : bool), 
   f (f (f b)) = f b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros f b.
+  destruct b.
+  Case "b = true".
+    remember (f true) as Ft.
+    destruct Ft.
+    SCase "Ft = true".
+      rewrite <- HeqFt.
+      rewrite <- HeqFt.
+      reflexivity.
+    SCase "Ft = false".
+      remember (f false) as Ff.
+      destruct Ff.
+      SSCase "Ff = true".
+        rewrite <- HeqFt.
+        reflexivity.
+      SSCase "Ff = false".
+        rewrite <- HeqFf.
+        reflexivity.
+  Case "b = false".
+    remember (f false) as Ff.
+    destruct Ff.
+    SCase "Ff = true".
+      remember (f true) as Ft.
+      destruct Ft.
+      SSCase "Ft = true".
+        rewrite <- HeqFt.
+        reflexivity.
+      SSCase "Ft = false".
+        rewrite <- HeqFf.
+        reflexivity.
+    SCase "Ff = false".
+      rewrite <- HeqFf.
+      rewrite <- HeqFf.
+      reflexivity.
+Qed.
+  
 (** [] *)
 
 (** **** Exercise: 2 stars (override_same) *)
