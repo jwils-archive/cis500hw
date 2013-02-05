@@ -286,10 +286,11 @@ Definition six_is_beautiful' : beautiful 6 :=
 Theorem nine_is_beautiful :
   beautiful 9.
 Proof.
-  b_sum 3 6 b_3 six_is_beautiful.
+  apply (b_sum 3 6 b_3 six_is_beautiful).
+Qed.
 
 Definition nine_is_beautiful' : beautiful 9 :=
-  (* FILL IN HERE *) admit.
+  b_sum 3 6 b_3 six_is_beautiful'.
 (** [] *)
 
 
@@ -341,19 +342,36 @@ Check b_plus3''.
 (** **** Exercise: 2 stars (b_times2) *)
 Theorem b_times2: forall n, beautiful n -> beautiful (2*n).
 Proof.
-    (* FILL IN HERE *) Admitted.
+  intros n H.
+  apply b_sum.
+  apply H.
+  apply b_sum.
+  apply H.
+  apply b_0.
+Qed.
+    
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (b_times2') *)
 (** Write a proof object corresponding to [b_times2] above *)
 
 Definition b_times2': forall n, beautiful n -> beautiful (2*n) :=
-  (* FILL IN HERE *) admit.
+  admit.
 
 (** **** Exercise: 2 stars (b_timesm) *)
 Theorem b_timesm: forall n m, beautiful n -> beautiful (m*n).
 Proof.
-   (* FILL IN HERE *) Admitted.
+   intros n m.
+   intros H.
+   induction m as [|m'].
+   simpl.
+   apply b_0.
+   simpl.
+   apply b_sum.
+   apply H.
+   apply IHm'.
+Qed.
+   
 (** [] *)
 
 (* ####################################################### *)
@@ -400,7 +418,7 @@ Inductive gorgeous : nat -> Prop :=
 (** Write out the definition of [gorgeous] numbers using inference rule
     notation.
  
-(* FILL IN HERE *)
+
 []
 *)
 
