@@ -93,7 +93,7 @@ Require Export MoreCoq.
 (** **** Exercise: 1 star (varieties_of_beauty) *)
 (** How many different ways are there to show that [8] is [beautiful]? *)
 
-(* FILL IN HERE *)
+(* Infinite. *)
 (** [] *)
 
 (** In Coq, we can express the definition of [beautiful] as
