@@ -342,8 +342,28 @@ Proof.
   intros n. induction n as [| n'].
     (* Hint: use the plus_n_Sm lemma *)
     Case "n = 0".
-      intros m. intros A. simpl in A.  Check plus_n_Sm.
-    Admitted.
+      destruct m as [| m'].
+      SCase "m = 0".
+        reflexivity.
+      SCase "m = S m'".
+        intros H.
+        inversion H.
+    Case "n = S n'".
+      destruct m as [| m'].
+      SCase "m = 0".
+        intros H.
+        inversion H.
+      SCase "m = S m'".
+        intros H.
+        inversion H.
+        rewrite <- plus_n_Sm in H1.
+        rewrite <- plus_n_Sm in H1.
+        inversion H1.
+        apply IHn' in H2.
+        rewrite -> H2.
+        reflexivity.
+Qed.
+    
 (** [] *)
 
 (* ###################################################### *)
