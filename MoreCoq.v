@@ -341,7 +341,9 @@ Theorem plus_n_n_injective : forall n m,
 Proof.
   intros n. induction n as [| n'].
     (* Hint: use the plus_n_Sm lemma *)
-    (* FILL IN HERE *) Admitted.
+    Case "n = 0".
+      intros m. intros A. simpl in A.  Check plus_n_Sm.
+    Admitted.
 (** [] *)
 
 (* ###################################################### *)
@@ -495,7 +497,29 @@ Proof.
 Theorem beq_nat_eq : forall n m,
   true = beq_nat n m -> n = m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    intros m.
+    destruct m as [| m'].
+    SCase "m = 0".
+      reflexivity.
+    SCase "m = S m'".
+      intros A.
+      inversion A.
+  Case "n = S n'".
+    intros m.
+    destruct m as [| m'].
+    SCase "m = 0".
+      intros A.
+      inversion A.
+    SCase "m = S m'".
+      intros A.
+      inversion A.
+      apply IHn' in H0.
+      rewrite -> H0.
+      reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, advanced (beq_nat_eq_informal) *)
