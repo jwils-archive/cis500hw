@@ -93,7 +93,7 @@ Require Export MoreCoq.
 (** **** Exercise: 1 star (varieties_of_beauty) *)
 (** How many different ways are there to show that [8] is [beautiful]? *)
 
-(* FILL IN HERE *)
+(* Infinite. *)
 (** [] *)
 
 (** In Coq, we can express the definition of [beautiful] as
@@ -272,10 +272,12 @@ Print eight_is_beautiful'''.
 Theorem six_is_beautiful :
   beautiful 6.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  apply (b_sum 3 3 b_3 b_3).
+Qed.
 
 Definition six_is_beautiful' : beautiful 6 :=
-  (* FILL IN HERE *) admit.
+  b_sum 3 3 b_3 b_3.
+
 (** [] *)
 
 (** **** Exercise: 1 star (nine_is_beautiful) *)
@@ -284,10 +286,11 @@ Definition six_is_beautiful' : beautiful 6 :=
 Theorem nine_is_beautiful :
   beautiful 9.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  apply (b_sum 3 6 b_3 six_is_beautiful).
+Qed.
 
 Definition nine_is_beautiful' : beautiful 9 :=
-  (* FILL IN HERE *) admit.
+  b_sum 3 6 b_3 six_is_beautiful'.
 (** [] *)
 
 
@@ -339,7 +342,13 @@ Check b_plus3''.
 (** **** Exercise: 2 stars (b_times2) *)
 Theorem b_times2: forall n, beautiful n -> beautiful (2*n).
 Proof.
-    (* FILL IN HERE *) Admitted.
+   intros n H.
+   apply b_sum.
+   apply H.
+   apply b_sum.
+   apply H.
+   apply b_0.
+ Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (b_times2') *)
@@ -351,7 +360,16 @@ Definition b_times2': forall n, beautiful n -> beautiful (2*n) :=
 (** **** Exercise: 2 stars (b_timesm) *)
 Theorem b_timesm: forall n m, beautiful n -> beautiful (m*n).
 Proof.
-   (* FILL IN HERE *) Admitted.
+   intros n m.
+  intros H.
+  induction m as [|m'].
+  simpl.
+  apply b_0.
+  simpl.
+  apply b_sum.
+  apply H.
+  apply IHm'.
+Qed.
 (** [] *)
 
 (* ####################################################### *)
@@ -399,7 +417,18 @@ Inductive gorgeous : nat -> Prop :=
     notation.
  
 (* FILL IN HERE *)
-[]
+[                             -----------                               (g_0)
+                              gorgeous 0
+                              
+                              gorgeous n 
+                              ------------                         (g_plus_3)
+                              gorgeous (3 + n)
+
+                              gorgeous n
+                              ------------                         (g_plus_5)
+                              gorgeous 5 + n
+
+]
 *)
 
 (** It seems intuitively obvious that, although [gorgeous] and
@@ -448,21 +477,37 @@ Admitted.
 Theorem gorgeous_plus13: forall n, 
   gorgeous n -> gorgeous (13+n).
 Proof.
-   (* FILL IN HERE *) Admitted.
+   intros n H.
+   apply g_plus3.
+   apply g_plus5.
+   apply g_plus5.
+   apply H.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (gorgeous_plus13_po):
 Give the proof object for theorem [gorgeous_plus13] above. *)
 
 Definition gorgeous_plus13_po: forall n, gorgeous n -> gorgeous (13+n):=
-   (* FILL IN HERE *) admit.
+   fun n => fun H : gorgeous n => g_plus3 (10 + n) (g_plus5 (5 + n) (g_plus5 n H)).
 (** [] *)
 
 (** **** Exercise: 2 stars (gorgeous_sum) *)
 Theorem gorgeous_sum : forall n m,
   gorgeous n -> gorgeous m -> gorgeous (n + m).
 Proof.
- (* FILL IN HERE *) Admitted.
+ intros n m Hn Hm.
+ induction Hn as [| n'|n'].
+ Case "g_0".
+ simpl.
+ apply Hm.
+ Case "g_plus3".
+ apply g_plus3.
+ apply IHHn.
+ Case "g_plus5".
+ apply g_plus5.
+ apply IHHn.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (beautiful__gorgeous) *)
@@ -524,7 +569,13 @@ Inductive ev : nat -> Prop :=
 Theorem double_even : forall n,
   ev (double n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n.
+  induction n as [|n'].
+  apply ev_0.
+  simpl.
+  apply ev_SS.
+  apply IHn'.
+Qed.
 (** [] *)
 
 (** **** Exercise: 4 stars, optional (double_even_pfobj) *)
@@ -602,7 +653,7 @@ Qed.
 (** Could this proof also be carried out by induction on [n] instead
     of [E]?  If not, why not? *)
 
-(* FILL IN HERE *)
+(* No since induction on n would only step by one, it wouldn't be helpful for proving the even case. *)
 (** [] *)
 
 (** The induction principle for inductively defined propositions does
@@ -614,7 +665,7 @@ Qed.
     depth below, to explain what's really going on. *)
 
 (** **** Exercise: 1 star (l_fails) *)
-(** The following proof attempt will not succeed.
+(** The following proof attempt will not succeed
      Theorem l : forall n,
        ev n.
      Proof.
@@ -624,7 +675,8 @@ Qed.
            ...
    Briefly explain why.
  
-(* FILL IN HERE *)
+(* ev of n does not apply to all n, only to even numbers. 
+Thus we can not prove this.*)
 *)
 (** [] *)
 
@@ -634,7 +686,18 @@ Qed.
 Theorem ev_sum : forall n m,
    ev n -> ev m -> ev (n+m).
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros n m Hn. induction Hn as [|n' Hn'].
+  Case "ev0".
+  intros Hm.
+  simpl.
+  apply Hm.
+  Case "ev_SS".
+  intros Hm.
+  simpl.
+  apply ev_SS.
+  apply IHHn'.
+  apply Hm.
+Qed.
 (** [] *)
 
 (** Another situation where we want to analyze evidence for evenness
@@ -703,7 +766,8 @@ Proof.
 Theorem SSSSev__even : forall n,
   ev (S (S (S (S n)))) -> ev n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n E. inversion E as [| n' E']. apply SSev__even. apply E'.
+Qed.
 
 (** The [inversion] tactic can also be used to derive goals by showing
     the absurdity of a hypothesis. *)
