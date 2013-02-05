@@ -973,7 +973,24 @@ Theorem override_permute : forall {X:Type} x1 x2 k1 k2 k3 (f : nat->X),
   false = beq_nat k2 k1 ->
   (override (override f k2 x2) k1 x1) k3 = (override (override f k1 x1) k2 x2) k3.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros X x1 x2 k1 k2 k3 f.
+  intros H.
+  unfold override.
+  remember (beq_nat k1 k3) as e13.
+  destruct e13.
+  Case "e13 = true".
+    apply beq_nat_eq in Heqe13.
+    rewrite -> Heqe13 in H.
+    rewrite <- H.
+    reflexivity.
+  Case "e13 = false".
+    remember (beq_nat k2 k3) as e23.
+    destruct e23.
+    SCase "e23 = true".
+      reflexivity.
+    SCase "e23 = false".
+     reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (apply_with_exercise1) *)
