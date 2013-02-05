@@ -1,3 +1,4 @@
+(* Ayaka Nonaka & Joshua Wilson (4 hours each) *)
 (** * MoreCoq: More About Coq *)
 
 Require Export Poly.
