@@ -107,7 +107,12 @@ Theorem rev_exercise1 : forall (l l' : list nat),
      l = rev l' ->
      l' = rev l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros l l'.
+  intros H.
+  rewrite -> H.
+  symmetry.
+  apply rev_involutive.
+Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, optional (apply_rewrite) *)
@@ -201,7 +206,10 @@ Example sillyex1 : forall (X : Type) (x y z : X) (l j : list X),
      y :: l = x :: j ->
      x = y.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros X x y z l j A B.
+  inversion B.
+  reflexivity.
+Qed.
 (** [] *)
 
 Theorem silly6 : forall (n : nat),
@@ -222,7 +230,9 @@ Example sillyex2 : forall (X : Type) (x y z : X) (l j : list X),
      y :: l = z :: j ->
      x = z.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros X x y z l j A B.
+  inversion A.
+Qed.
 (** [] *)
 
 (** While the injectivity of constructors allows us to reason
@@ -331,7 +341,9 @@ Theorem plus_n_n_injective : forall n m,
 Proof.
   intros n. induction n as [| n'].
     (* Hint: use the plus_n_Sm lemma *)
-    (* FILL IN HERE *) Admitted.
+    Case "n = 0".
+      intros m. intros A. simpl in A.  Check plus_n_Sm.
+    Admitted.
 (** [] *)
 
 (* ###################################################### *)
@@ -485,7 +497,29 @@ Proof.
 Theorem beq_nat_eq : forall n m,
   true = beq_nat n m -> n = m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    intros m.
+    destruct m as [| m'].
+    SCase "m = 0".
+      reflexivity.
+    SCase "m = S m'".
+      intros A.
+      inversion A.
+  Case "n = S n'".
+    intros m.
+    destruct m as [| m'].
+    SCase "m = 0".
+      intros A.
+      inversion A.
+    SCase "m = S m'".
+      intros A.
+      inversion A.
+      apply IHn' in H0.
+      rewrite -> H0.
+      reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, advanced (beq_nat_eq_informal) *)
