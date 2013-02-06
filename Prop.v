@@ -653,7 +653,7 @@ Qed.
 (** Could this proof also be carried out by induction on [n] instead
     of [E]?  If not, why not? *)
 
-(* No since induction on n would only step by one, it wouldn't be helpful for proving the even case. *)
+(* No since induction on n would only step by one, it wouldn't be helpful for proving the even case. In other words, we wouldn't be able to use the induction hypothesis which looks just one step back in any useful way.*)
 (** [] *)
 
 (** The induction principle for inductively defined propositions does
@@ -885,7 +885,10 @@ Definition b_16 : beautiful 16 :=
        forall l, pal l -> l = rev l.
 *)
 
-(* FILL IN HERE *)
+Inductive palindrome : list X -> Prop :=
+|Empty : palindrome nil
+|Single : forall n, palindrome (n :: nil)
+|Rcons : forall (n : nat)(l : list nat), palindrome (n :: (rcons nat n l)).(* FILL IN HERE *)
 (** [] *)
 
 (** **** Exercise: 5 stars, optional (palindrome_converse) *)
@@ -946,7 +949,10 @@ Definition b_16 : beautiful 16 :=
     - [R 6 [3,2,1,0]]
 *)
 
-(** [] *)
+Inductive palindrome : list X -> Prop :=
+|Empty : palindrome nil
+|Single : forall n, palindrome (n :: nil)
+|Rcons : forall (n : nat)(l : list nat), palindrome (n :: (rcons nat n l)).(** [] *)
 
 
 (* ##################################################### *)
