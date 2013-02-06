@@ -885,10 +885,22 @@ Definition b_16 : beautiful 16 :=
        forall l, pal l -> l = rev l.
 *)
 
-Inductive palindrome : list X -> Prop :=
-|Empty : palindrome nil
-|Single : forall n, palindrome (n :: nil)
-|Rcons : forall (n : nat)(l : list nat), palindrome (n :: (rcons nat n l)).(* FILL IN HERE *)
+Inductive palindrome {X:Type}: list X -> Prop :=
+|empty_p : (palindrome nil)
+|single_p : forall n, palindrome (n :: nil)
+|multi_p : forall (n : X)(l : list X), palindrome l -> palindrome (n :: (snoc l n)).
+
+Check palindrome [1,1].
+Check palindrome [1, 1, 1].
+Lemma helper_1 : palindrome (h :: l' ++ snoc (rev l') h)
+Theorem l_cons_rev : forall (X : Type)(l : list X), palindrome (l ++ rev l).
+Proof.
+  intros X l.
+  induction l as [| h l'].
+  simpl. apply empty_p.
+  simpl.
+  
+  simpl. 
 (** [] *)
 
 (** **** Exercise: 5 stars, optional (palindrome_converse) *)
@@ -948,11 +960,7 @@ Inductive palindrome : list X -> Prop :=
     - [R 1 [1,2,1,0]]
     - [R 6 [3,2,1,0]]
 *)
-
-Inductive palindrome : list X -> Prop :=
-|Empty : palindrome nil
-|Single : forall n, palindrome (n :: nil)
-|Rcons : forall (n : nat)(l : list nat), palindrome (n :: (rcons nat n l)).(** [] *)
+(** [] *)
 
 
 (* ##################################################### *)
