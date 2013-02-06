@@ -891,16 +891,35 @@ Inductive palindrome {X:Type}: list X -> Prop :=
 |multi_p : forall (n : X)(l : list X), palindrome l -> palindrome (n :: (snoc l n)).
 
 Check palindrome [1,1].
-Check palindrome [1, 1, 1].
-Lemma helper_1 : palindrome (h :: l' ++ snoc (rev l') h)
-Theorem l_cons_rev : forall (X : Type)(l : list X), palindrome (l ++ rev l).
-Proof.
-  intros X l.
-  induction l as [| h l'].
+Check palindrome [1, 2, 1].
+
+Theorem  pal_l_rev_pal : forall (X : Type) (l : list X), palindrome (l ++ rev l).
+intros X l.
+induction l as [|n l'].
+Case "l = nil".
   simpl. apply empty_p.
-  simpl.
-  
-  simpl. 
+Case "l = n :: l'".
+  simpl. rewrite <- snoc_with_append.
+  apply multi_p.
+  apply IHl'.
+Qed.
+
+Theorem  pal_l_l_rev_l : forall (X : Type) (l : list X), palindrome (l) -> l = rev l.
+Proof.
+intros X l.
+intros H. induction H as [| n | h t].
+Case "empty_p".
+  reflexivity. 
+Case "single_p".
+  reflexivity.
+Case "multi_p".
+simpl. rewrite -> rev_snoc. 
+rewrite <- IHpalindrome.
+reflexivity.
+Qed.
+
+
+ 
 (** [] *)
 
 (** **** Exercise: 5 stars, optional (palindrome_converse) *)
