@@ -1,3 +1,4 @@
+(* Ayaka Nonaka & Joshua Wilson (5 hours each) *)
 (** * Prop: Propositions and Evidence *)
 
 Require Export MoreCoq.
