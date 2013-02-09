@@ -147,7 +147,16 @@ Theorem and_assoc : forall P Q R : Prop,
 Proof.
   intros P Q R H.
   inversion H as [HP [HQ HR]].
-(* FILL IN HERE *) Admitted.
+  split.
+  Case "left".
+    split.
+    SCase "left left".
+      apply HP.
+    SCase "left right".
+      apply HQ.
+  Case "right".
+    apply HR.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars (even__ev) *)
