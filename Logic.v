@@ -173,7 +173,27 @@ Theorem even__ev : forall n : nat,
   (even n -> ev n) /\ (even (S n) -> ev (S n)).
 Proof.
   (* Hint: Use induction on [n]. *)
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [| n'].
+  Case "n = 0".
+    split.
+    SCase "left".
+      intros H.
+      apply ev_0.
+    SCase "right".
+      intros H.
+      inversion H.
+  Case "n = S n'".
+    inversion IHn'.
+    split.
+    SCase "left".
+      apply H0.
+    SCase "right".
+      intros Hb.
+      apply ev_SS.
+      inversion Hb.
+      apply H in H2.
+      apply H2.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (conj_fact) *)
