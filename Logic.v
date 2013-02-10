@@ -667,13 +667,41 @@ Proof.
     apply H. reflexivity.   Qed.
 
 
-
 (** **** Exercise: 2 stars (not_eq_beq_false) *)
 Theorem not_eq_beq_false : forall n n' : nat,
      n <> n' ->
      beq_nat n n' = false.
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros n.
+  induction n.
+  Case "n = 0".
+    intros n'. destruct n'.
+    SCase "n' = 0".
+      intros H.
+      unfold not in H.
+      apply ex_falso_quodlibet.
+      apply H.
+      reflexivity.
+    SCase "n' = S n'".
+      intros H.
+      simpl. reflexivity.
+  Case "n = S m".
+    intros n'. destruct n'.
+    SCase "n' = 0".
+      intros H.
+      simpl. reflexivity.
+    SCase "n' = S n'".
+      intros H.
+      simpl.
+      apply IHn.
+      unfold not.
+      unfold not in H.
+      intros H2.
+      apply H.
+      rewrite H2.
+      reflexivity.
+Qed.
+  
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (beq_false_not_eq) *)
