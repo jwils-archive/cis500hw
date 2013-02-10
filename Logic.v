@@ -905,7 +905,9 @@ Notation "x = y" := (eq _ x y)
 Lemma leibniz_equality : forall (X : Type) (x y: X), 
  x = y -> forall P : X -> Prop, P x -> P y.
 Proof.
-(* FILL IN HERE *) Admitted.
+  intros X x y.
+  
+
 (** [] *)
 
 (** We can use

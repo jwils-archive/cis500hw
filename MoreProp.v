@@ -137,10 +137,24 @@ Theorem combine_odd_even_intro :
     combine_odd_even Podd Peven n.
 Proof.
   intros podd peven n.
+  unfold oddb.
   intros H.
-  
   intros H2.
-  intros Hsub in H.
+  induction n as [| n'].
+  Case "n = 0".
+    unfold combine_odd_even.
+    apply H2.
+    reflexivity.
+  Case "n = S n'".
+    unfold combine_odd_even.
+    destruct evenb.
+    SCase "true".
+      apply H2.
+      reflexivity.
+    SCase "false".
+      apply H.
+      reflexivity.
+Qed.
 
 Theorem combine_odd_even_elim_odd :
   forall (Podd Peven : nat -> Prop) (n : nat),
@@ -148,7 +162,21 @@ Theorem combine_odd_even_elim_odd :
     oddb n = true ->
     Podd n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros Podd Peven n.
+  unfold combine_odd_even.
+  unfold oddb.
+  destruct evenb.
+  Case "evenb = true".
+    simpl.
+    intros H.
+    intros H2.
+    inversion H2.
+  Case "evenb = false".
+    intros H.
+    intros H2.
+    apply H.
+Qed.
+  
 
 Theorem combine_odd_even_elim_even :
   forall (Podd Peven : nat -> Prop) (n : nat),
@@ -156,7 +184,22 @@ Theorem combine_odd_even_elim_even :
     oddb n = false ->
     Peven n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros Podd Peven n.
+  unfold combine_odd_even.
+  unfold oddb.
+  destruct evenb.
+  Case " evenb n = true".
+    intros H.
+    simpl.
+    intros H2.
+    apply H.
+  Case "evenb n = false".
+    intros H.
+    simpl.
+    intros H2.
+    inversion H2.
+Qed.
+  
 
 (** [] *)
 
