@@ -592,7 +592,15 @@ Theorem ev_not_ev_S : forall n,
   ev n -> ~ ev (S n).
 Proof. 
   unfold not. intros n H. induction H. (* not n! *)
-  (* FILL IN HERE *) Admitted.
+  Case "base case".  
+    intros H.
+    inversion H.
+  Case "induction step".
+    intros A.
+    inversion A.
+    apply IHev in H1.
+    inversion H1.
+Qed.
 (** [] *)
 
 (** Note that some theorems that are true in classical logic are _not_
