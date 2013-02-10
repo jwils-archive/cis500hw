@@ -815,7 +815,14 @@ Definition p : ex nat (fun n => beautiful (S n)) :=
 Theorem dist_not_exists : forall (X:Type) (P : X -> Prop),
   (forall x, P x) -> ~ (exists x, ~ P x).
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros X P H.
+  unfold not.
+  intros H1.
+  inversion H1.
+  apply H0 in H.
+  apply H.
+Qed.
+
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (not_exists_dist) *)
