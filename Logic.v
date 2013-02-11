@@ -906,7 +906,13 @@ Lemma leibniz_equality : forall (X : Type) (x y: X),
  x = y -> forall P : X -> Prop, P x -> P y.
 Proof.
   intros X x y.
-  
+  intros A. intros B.
+  inversion A.
+  apply eq in A.
+  intros H1.
+  apply H1.
+  apply A.
+Qed.
 
 (** [] *)
 
