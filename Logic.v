@@ -1205,8 +1205,8 @@ End R.
     asserts that [P] is true for every element of the list [l]. *)
 
 Inductive all (X : Type) (P : X -> Prop) : list X -> Prop :=
-  (* FILL IN HERE *)
-.
+  | allEmpty : all X P []
+  | allSucc : forall (x : X) (xs : list X), all X P xs -> P x -> all X P (x::xs).
 
 (** Recall the function [forallb], from the exercise
     [forall_exists_challenge] in chapter [Poly]: *)
@@ -1224,8 +1224,24 @@ Fixpoint forallb {X : Type} (test : X -> bool) (l : list X) : bool :=
     Are there any important properties of the function [forallb] which
     are not captured by your specification? *)
 
-(* FILL IN HERE *)
-(** [] *)
+Theorem all_forallb : forall (X : Type) (P : X -> Prop) (l : list X) (test : X -> bool),
+  all X P l -> forallb test l = true.
+Proof.
+  intros X P l test.
+  induction l as [| h t].
+  Case "l = []".
+    intros H.
+    unfold forallb.
+    reflexivity.
+  Case "l = h :: t".
+    intros H.
+    simpl.
+    inversion H.
+    apply IHt in H2.
+    rewrite -> H2.
+    Admitted.
+(** [] **)
+  
 
 (** **** Exercise: 4 stars, advanced (filter_challenge) *)
 (** One of the main purposes of Coq is to prove that programs match
