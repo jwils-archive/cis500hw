@@ -1224,10 +1224,10 @@ Fixpoint forallb {X : Type} (test : X -> bool) (l : list X) : bool :=
     Are there any important properties of the function [forallb] which
     are not captured by your specification? *)
 
-Theorem all_forallb : forall (X : Type) (P : X -> Prop) (l : list X) (test : X -> bool),
-  all X P l -> forallb test l = true.
+Theorem all_forallb : forall (X : Type) (l : list X) (test : X -> bool),
+  (all X (fun (x : X) => (test x = true)) l) -> forallb test l = true.
 Proof.
-  intros X P l test.
+  intros X l test.
   induction l as [| h t].
   Case "l = []".
     intros H.
@@ -1239,7 +1239,9 @@ Proof.
     inversion H.
     apply IHt in H2.
     rewrite -> H2.
-    Admitted.
+    rewrite -> H3.
+    simpl. reflexivity.
+Qed.
 (** [] **)
   
 
