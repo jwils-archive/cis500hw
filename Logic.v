@@ -1393,9 +1393,16 @@ Proof.
     predicate in the exercise above; the sequence [1,4,1] repeats but
     does not stutter.) *)
 
+Definition hd (default:nat) (l:list nat) : nat :=
+  match l with
+  | nil => default
+  | h :: t => h
+  end.
+
 Inductive nostutter:  list nat -> Prop :=
- (* FILL IN HERE *)
-.
+  | emptyNostutter : nostutter []
+  | oneNostutter : forall n:nat, nostutter [n]
+  | moreNostutter : forall n (l:list nat), and (nostutter l) (n <> (hd 0 l)) -> nostutter (n::l).
 
 (** Make sure each of these tests succeeds, but you are free
     to change the proof if the given one doesn't work for you.
@@ -1410,32 +1417,32 @@ Inductive nostutter:  list nat -> Prop :=
     tactics.  *)
 
 Example test_nostutter_1:      nostutter [3,1,4,1,5,6].
-(* FILL IN HERE *) Admitted.
-(* 
   Proof. repeat constructor; apply beq_false_not_eq; auto. Qed.
-*)
 
 Example test_nostutter_2:  nostutter [].
-(* FILL IN HERE *) Admitted.
-(* 
   Proof. repeat constructor; apply beq_false_not_eq; auto. Qed.
-*)
 
 Example test_nostutter_3:  nostutter [5].
-(* FILL IN HERE *) Admitted.
-(* 
   Proof. repeat constructor; apply beq_false_not_eq; auto. Qed.
-*)
+
+Lemma one_is_one :
+  1 = 1.
+Proof. reflexivity. Qed.
 
 Example test_nostutter_4:      not (nostutter [3,1,1,4]).
-(* FILL IN HERE *) Admitted.
-(* 
   Proof. intro.
   repeat match goal with 
     h: nostutter _ |- _ => inversion h; clear h; subst 
   end.
-  contradiction H1; auto. Qed.
-*)
+  simpl in H1.
+  inversion H1.
+  inversion H.
+  inversion H3.
+  unfold hd in H6.
+  unfold not in H6.
+  apply H6.
+  apply one_is_one.
+Qed.
 (** [] *)
 
 (** **** Exercise: 4 stars, advanced (pigeonhole principle) *)
