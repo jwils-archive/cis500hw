@@ -1119,7 +1119,27 @@ Inductive next_even (n:nat) : nat -> Prop :=
 (** Define an inductive binary relation [total_relation] that holds
     between every pair of natural numbers. *)
 
-(* FILL IN HERE *)
+Inductive gle : nat -> nat -> Prop :=
+  | gle_n : forall n, gle n n
+  | gle_S : forall n m, (gle n m) -> (gle n (S m))
+  | gle_P : forall n m, (gle n m) -> (gle (S n) m).
+
+Theorem gle_all : forall n m,
+  gle n m.
+Proof.
+  intros n m.
+  induction n as [| n'].
+    induction m as [| m'].
+    Case "n = 0, m = 0".
+      apply gle_n.
+    Case "n = 0, m = S m'".
+      apply gle_S. apply IHm'.
+    induction m as [| m'].
+    Case "n = S n', m = 0".
+      apply gle_P. apply IHn'.
+    Case "n = S n', m = S m'".
+      apply gle_P in IHn'. apply IHn'.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars (empty_relation) *)
