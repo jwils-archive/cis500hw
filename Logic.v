@@ -1177,7 +1177,11 @@ Inductive R : nat -> nat -> nat -> Prop :=
       would the set of provable propositions change?  Briefly (1
       sentence) explain your answer.
 
-(* FILL IN HERE *)
+Just R 1 1 2 is provable by c2 and c3.
+
+Dropping c5 doesn't change the set of provable propositions, since c5 is implied by c1, c2, c3, and c4 since c1 and c4 are symmetric for the first two arguments, and c2 and c3 combined are symmetric for the first two arguments.
+
+Dropping c4 doesn't change the set of provable propositions, since c5 is implied by c2 and c3, since it's just the backward direction, and the only way to get to R (S m) (S n) (S (S o)) is to apply c2 and c3, so it just ends up being redundant.
 []
 *)
 
