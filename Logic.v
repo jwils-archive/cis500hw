@@ -1225,22 +1225,45 @@ Fixpoint forallb {X : Type} (test : X -> bool) (l : list X) : bool :=
     are not captured by your specification? *)
 
 Theorem all_forallb : forall (X : Type) (l : list X) (test : X -> bool),
-  (all X (fun (x : X) => (test x = true)) l) -> forallb test l = true.
+  (all X (fun (x : X) => (test x = true)) l) <-> forallb test l = true.
 Proof.
   intros X l test.
   induction l as [| h t].
   Case "l = []".
-    intros H.
-    unfold forallb.
-    reflexivity.
+    split.
+    SCase "forward".
+      intros H.
+      unfold forallb.
+      reflexivity.
+    SCase "backward".
+      intros H.
+      apply allEmpty.
   Case "l = h :: t".
-    intros H.
-    simpl.
-    inversion H.
-    apply IHt in H2.
-    rewrite -> H2.
-    rewrite -> H3.
-    simpl. reflexivity.
+    split.
+    SCase "forward".
+      intros H.
+      simpl.
+      inversion H.
+      apply IHt in H2.
+      rewrite -> H2.
+      rewrite -> H3.
+      simpl. reflexivity.
+    SCase "backward".
+      intros H.
+      apply allSucc.
+      SSCase "First part".
+        inversion H.
+        rewrite -> H1.
+        apply IHt.
+        apply andb_true__and in H1.
+        inversion H1.
+        apply H2.
+      SSCase "Second part".
+        simpl in H.
+        apply andb_true__and in H.
+        inversion H.
+        rewrite -> H0.
+        reflexivity.
 Qed.
 (** [] **)
   
