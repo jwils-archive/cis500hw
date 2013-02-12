@@ -1146,7 +1146,8 @@ Qed.
 (** Define an inductive binary relation [empty_relation] (on numbers)
     that never holds. *)
 
-Inductive
+Inductive empty_relation : nat -> nat -> Prop :=
+  | le_S : forall n m, (empty_relation n m) -> (empty_relation n (S m)).
 
 (* FILL IN HERE *)
 (** [] *)
