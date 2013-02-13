@@ -1,3 +1,4 @@
+(* Ayaka Nonaka & Joshua Wilson (10 hours) *)
 (** * Logic: Logic in Coq *)
 
 Require Export MoreProp. 
@@ -1265,6 +1266,8 @@ Proof.
         rewrite -> H0.
         reflexivity.
 Qed.
+
+(* Not that I am aware of? *)
 (** [] **)
   
 

@@ -1,3 +1,4 @@
+(* Ayaka Nonaka & Joshua Wilson (10 hours) *)
 (** * MoreProp: More about Propositions and Evidence *)
 
 Require Export "Prop".
