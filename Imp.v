@@ -523,7 +523,34 @@ Proof.
     as elegant as possible. *)
 
 (* FILL IN HERE *)
-(** [] *)
+
+Fixpoint optimize_0plus_b (b:bexp) : bexp :=
+  match b with
+  | BTrue => BTrue
+  | BFalse => BFalse
+  | BEq a1 a2 => BEq (optimize_0plus a1) (optimize_0plus a2)
+  | BLe a1 a2 => BLe (optimize_0plus a1) (optimize_0plus a2)
+  | BNot b1 => BNot (optimize_0plus_b b1)
+  | BAnd b1 b2 => BAnd (optimize_0plus_b b1) (optimize_0plus_b b2)
+  end.
+
+Tactic Notation "bexp_cases" tactic(first) ident(c) :=
+  first;
+  [ Case_aux c "BTrue" | Case_aux c "BFalse"
+  | Case_aux c "Beq" | Case_aux c "BLe"
+  | Case_aux c "BNot" | Case_aux c "BAnd"].
+
+Theorem optimize_0plus_b_sound: forall b,
+  beval (optimize_0plus_b b) = beval b.
+Proof.
+  intros b.
+  bexp_cases (induction b) Case;
+  simpl;
+  try (rewrite optimize_0plus_sound'''; rewrite optimize_0plus_sound''');
+  try(reflexivity).
+  rewrite IHb. reflexivity.
+  rewrite IHb1. rewrite IHb2. reflexivity.
+  Qed.
 
 (** **** Exercise: 4 stars, optional (optimizer) *)
 (** _Design exercise_: The optimization implemented by our
