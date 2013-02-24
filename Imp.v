@@ -1047,7 +1047,8 @@ Proof.
 Theorem update_example : forall (n:nat),
   (update empty_state (Id 2) n) (Id 3) = 0.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros.
+  unfold update. simpl. unfold empty_state. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 1 star (update_shadow) *)
