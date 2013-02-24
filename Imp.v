@@ -847,6 +847,7 @@ Theorem beval_iff_bevalR : forall e b,
     apply IHe1. reflexivity.
     apply IHe2. reflexivity.
 Qed.
+
 (* ####################################################### *)
 (** ** Computational vs. Relational Definitions *)
 
@@ -1028,7 +1029,7 @@ Definition update (st : state) (x : id) (n : nat) : state :=
 Theorem update_eq : forall n x st,
   (update st x n) x = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold update. rewrite <- beq_id_refl. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 1 star (update_neq) *)
