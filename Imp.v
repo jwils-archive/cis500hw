@@ -1075,7 +1075,9 @@ Theorem update_permute : forall n1 n2 x1 x2 x3 st,
   beq_id x2 x1 = false ->
   (update (update st x2 n1) x1 n2) x3 = (update (update st x1 n2) x2 n1) x3.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold update. remember (beq_id x1 x3) as e1.
+  destruct e1. apply beq_id_eq in Heqe1. rewrite -> Heqe1 in H.
+  rewrite -> H. reflexivity. reflexivity. Qed.
 (** [] *)
 
 (* ################################################### *)
