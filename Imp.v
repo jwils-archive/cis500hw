@@ -1055,7 +1055,8 @@ Proof.
 Theorem update_shadow : forall n1 n2 x1 x2 (st : state),
    (update  (update st x2 n1) x2 n2) x1 = (update st x2 n2) x1.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold update. destruct (beq_id x2 x1).
+  reflexivity. reflexivity.
 (** [] *)
 
 (** **** Exercise: 2 stars (update_same) *)
@@ -1063,7 +1064,10 @@ Theorem update_same : forall n1 x1 x2 (st : state),
   st x1 = n1 ->
   (update st x1 n1) x2 = st x2.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold update. remember (beq_id x1 x2) as e1.
+  destruct e1. apply beq_id_eq in Heqe1.
+  rewrite <- Heqe1. symmetry. apply H. reflexivity.
+  Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars (update_permute) *)
