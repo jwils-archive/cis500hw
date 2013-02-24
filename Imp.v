@@ -1037,7 +1037,7 @@ Theorem update_neq : forall x2 x1 n st,
   beq_id x2 x1 = false ->
   (update st x2 n) x1 = (st x1).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. unfold update. rewrite H. reflexivity. Qed.
 (** [] *)
 
 (** **** Exercise: 1 star (update_example) *)
