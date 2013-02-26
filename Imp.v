@@ -1611,13 +1611,22 @@ Fixpoint no_whiles (c : com) : bool :=
     with [no_whiles]. *)
 
 Inductive no_whilesR: com -> Prop :=
- (* FILL IN HERE *)
-  .
+  | NoWhiles_Skip : no_whilesR SKIP
+  | NoWhiles_Ass : forall x y, no_whilesR (x ::= y)
+  | NoWhiles_Seq : forall x y, no_whilesR x -> no_whilesR y -> no_whilesR (x; y)
+  | NoWhiles_If : forall b x y, no_whilesR x -> no_whilesR y -> no_whilesR  (IFB b THEN x ELSE y FI).
 
 Theorem no_whiles_eqv:
    forall c, no_whiles c = true <-> no_whilesR c.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros c.
+  split.
+  Case "->".
+  intros H.
+  induction c.
+  Admitted. (* Not sure what to do...*)
+ 
+
 (** [] *)
 
 (** **** Exercise: 4 stars (no_whiles_terminating) *)
