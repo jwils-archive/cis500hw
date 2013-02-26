@@ -1584,7 +1584,12 @@ Proof.
      [loopdef] terminates.  Most of the cases are immediately
      contradictory (and so can be solved in one step with
      [inversion]). *)
-  (* FILL IN HERE *) Admitted.
+  ceval_cases (induction contra) Case; try (inversion Heqloopdef). 
+  Case "E_WhileEnd".
+    rewrite H1 in H. simpl in H. inversion H.
+  Case "E_WhileLoop".
+    subst. apply IHcontra2. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars (no_whilesR) *)
