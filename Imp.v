@@ -1454,8 +1454,13 @@ Example ceval_example2:
     (X ::= ANum 0; Y ::= ANum 1; Z ::= ANum 2) / empty_state ||
     (update (update (update empty_state X 0) Y 1) Z 2).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  apply E_Seq with (update empty_state X 0).
+  apply E_Ass. unfold aeval. reflexivity.
+  apply E_Seq with (update (update empty_state X 0) Y 1).
+  apply E_Ass. unfold aeval. reflexivity.
+  apply E_Ass. unfold aeval. reflexivity. Qed.
+(** [] *) 
+
 
 (** **** Exercise: 3 stars, advanced (pup_to_n) *)
 (** Write an Imp program that sums the numbers from [1] to
