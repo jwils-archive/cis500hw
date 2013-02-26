@@ -1561,7 +1561,17 @@ Proof.
 (** **** Exercise: 3 stars (XtimesYinZ_spec) *)
 (** State and prove a specification of [XtimesYinZ]. *)
 
-(* FILL IN HERE *)
+Theorem XtimesYinZ_spec : forall st x y st',
+  st X = x ->
+  st Y = y ->
+  XtimesYinZ / st || st' ->
+  st' Z = x * y.
+Proof. 
+  intros st x y st'.
+  intros Hx Hy Heval.
+  inversion Heval.
+  subst. simpl. apply update_eq.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars (loop_never_stops) *)
