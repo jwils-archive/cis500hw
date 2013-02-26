@@ -848,6 +848,8 @@ Theorem beval_iff_bevalR : forall e b,
     apply IHe2. reflexivity.
 Qed.
 
+End AExp.
+
 (* ####################################################### *)
 (** ** Computational vs. Relational Definitions *)
 
