@@ -1059,6 +1059,7 @@ Theorem update_shadow : forall n1 n2 x1 x2 (st : state),
 Proof.
   intros. unfold update. destruct (beq_id x2 x1).
   reflexivity. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars (update_same) *)
