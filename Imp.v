@@ -1623,16 +1623,46 @@ Proof.
   split.
   Case "->".
   intros H.
-  induction c.
-  SCase "SKIP".
-  apply NoWhiles_Skip.
-  SCase "E_ASS".
-  apply NoWhiles_Ass.
-  SCase "E_Seq".
-  apply NoWhiles_Seq.
-  apply IHc1.
-  Admitted. (* Not sure what to do...*)
- 
+  com_cases (induction c) SCase; try constructor; inversion H; subst.
+
+  remember (no_whiles c1) as A.
+  unfold andb in H1.
+  destruct A; try inversion H1.
+  apply IHc1. reflexivity.
+  remember (no_whiles c2) as A.
+  unfold andb in H1.
+  destruct A; try inversion H1.
+  apply IHc2. reflexivity.
+
+  apply IHc2. remember (no_whiles c1) as A.
+  destruct A; inversion H1.
+
+  remember (no_whiles c1) as A.
+  destruct A; try inversion H1.
+  apply IHc1. reflexivity.
+
+  remember (no_whiles c2) as A.
+  destruct A; try inversion H1.
+  apply IHc2. reflexivity.
+
+  remember (no_whiles c1) as A.
+  unfold andb in H1.
+  destruct A; try inversion H1.
+
+  Case "<-".
+  intros.
+  induction c; try constructor; subst; simpl.
+  inversion H. subst. apply andb_true_iff. split.
+  SCase "left".
+    apply IHc1. apply H2.
+  SCase "right".
+    apply IHc2. apply H3.
+  inversion H. subst. apply andb_true_iff. split.
+    apply IHc1. apply H2.
+    apply IHc2. apply H4.
+  inversion H.
+Qed.
+
 
 (** [] *)
 
@@ -1640,7 +1670,6 @@ Proof.
 (** Imp programs that don't involve while loops always terminate.
     State and prove a theorem that says this. *)
 (** (Use either [no_whiles] or [no_whilesR], as you prefer.) *)
-Theorem no_whiles_terminating forall c  
 
 (** [] *)
 
