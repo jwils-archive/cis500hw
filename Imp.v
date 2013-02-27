@@ -1671,7 +1671,9 @@ Qed.
     State and prove a theorem that says this. *)
 (** (Use either [no_whiles] or [no_whilesR], as you prefer.) *)
 
-(** [] *)
+Theorem no_whiles_terminating : forall p st,
+  no_whilesR p -> exists st', p / st || st'.
+  (* Admitted *)
 
 (* ####################################################### *)
 (** * Additional Exercises *)
