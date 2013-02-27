@@ -1624,6 +1624,13 @@ Proof.
   Case "->".
   intros H.
   induction c.
+  SCase "SKIP".
+  apply NoWhiles_Skip.
+  SCase "E_ASS".
+  apply NoWhiles_Ass.
+  SCase "E_Seq".
+  apply NoWhiles_Seq.
+  apply IHc1.
   Admitted. (* Not sure what to do...*)
  
 
@@ -1633,8 +1640,8 @@ Proof.
 (** Imp programs that don't involve while loops always terminate.
     State and prove a theorem that says this. *)
 (** (Use either [no_whiles] or [no_whilesR], as you prefer.) *)
+Theorem no_whiles_terminating forall c  
 
-(* FILL IN HERE *)
 (** [] *)
 
 (* ####################################################### *)
