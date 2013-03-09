@@ -1675,6 +1675,23 @@ Qed.
 
 Theorem no_whiles_terminating : forall p st,
   no_whilesR p -> exists st', p / st || st'.
+intros p st.
+intros H.
+inversion H.
+exists st.
+apply E_Skip.
+exists (update st x (aeval st y)).
+apply E_Ass.
+reflexivity.
+rewrite -> H2.
+induction p.
+exists st.
+apply E_Skip.
+exists (update st i (aeval st a)).
+apply E_Ass.
+reflexivity.
+
+
   (* Admitted *)
 
 (* ####################################################### *)
