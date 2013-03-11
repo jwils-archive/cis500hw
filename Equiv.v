@@ -276,7 +276,18 @@ Theorem IFB_false: forall b c1 c2,
     (IFB b THEN c1 ELSE c2 FI) 
     c2.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros b c1 c2 Hb.
+  split; intros H.
+  Case "->".
+    inversion H; subst.
+    unfold bequiv in Hb.
+    rewrite Hb in H5.
+    inversion H5.
+    assumption.
+    apply E_IfFalse.
+    apply Hb.
+    assumption.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars (swap_if_branches) *)
