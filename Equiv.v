@@ -412,7 +412,22 @@ Theorem WHILE_true: forall b c,
        (WHILE b DO c END)
        (WHILE BTrue DO SKIP END).
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  intros b c Hb. split; intros H.
+  Case "->".
+    inversion H; subst.
+    unfold bequiv in Hb.
+    rewrite Hb in H4. inversion H4.
+    assert (~(WHILE b DO c END) / st || st').
+    apply WHILE_true_nonterm.
+    assumption.
+    apply H0 in H. inversion H.
+    assert (~(WHILE BTrue DO SKIP END) / st || st').
+    apply WHILE_true_nonterm.
+    unfold bequiv. reflexivity.
+    apply H0 in H. inversion H.
+Qed.
+ 
+  
 (** [] *)
 
 Theorem loop_unrolling: forall b c,
