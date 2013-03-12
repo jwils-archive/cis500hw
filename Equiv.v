@@ -1178,7 +1178,29 @@ Proof.
     SCase "b always false".
       apply trans_cequiv with c2; try assumption.
       apply IFB_false; assumption.
-  Case "WHILE".
+  Case "WHILE". 
+    bexp_cases (destruct (WHILE b DO c END)b) SCase; 
+      try apply WHILE_true; 
+      try apply WHILE_false;
+    try apply refl_bequiv.
+      SCase "BEq".
+        apply CWhile_.
+     
+   
+rewrite <- WHILE_true_nonterm.
+    
+    apply CWhile_congruence.
+unfold cequiv.
+    
+    apply loop_unrolling.
+    apply CWhile_congruence.
+    apply refl_bequiv. 
+    destruct b'; try apply CWhile_congruence; try assumption.
+    rewrite -> Heqb'. 
+    apply fold_constants_bexp_sound.
+    unfold cequiv.
+     
+
     (* FILL IN HERE *) Admitted.
 (** [] *)
 
