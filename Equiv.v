@@ -1502,12 +1502,16 @@ Tactic Notation "ceval_cases" tactic(first) ident(c) :=
 
 Example havoc_example1 : (HAVOC X) / empty_state || update empty_state X 0.
 Proof.
-(* FILL IN HERE *) Admitted.
+  apply E_Havoc.
+Qed.
 
 Example havoc_example2 :
   (SKIP; HAVOC Z) / empty_state || update empty_state Z 42.
 Proof.
-(* FILL IN HERE *) Admitted.
+  apply E_Seq with empty_state.
+  apply E_Skip.
+  apply E_Havoc.
+Qed.
 (** [] *)
 
 (** Finally, we repeat the definition of command equivalence from above: *)
