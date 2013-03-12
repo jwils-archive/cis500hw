@@ -554,7 +554,31 @@ Theorem assign_aequiv : forall X e,
   aequiv (AId X) e -> 
   cequiv SKIP (X ::= e).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros X e H; split.
+  Case "->".
+    intros H1.
+    inversion H1. subst.
+    unfold aequiv in H.
+    simpl in H.
+    assert (st' = update st' X (st' X)).
+      apply functional_extensionality. intro. 
+      rewrite update_same; reflexivity.
+    rewrite H0 at 2.
+    constructor. symmetry. apply H.
+  Case "<-".
+    intros H1.
+    inversion H1. subst.
+    unfold aequiv in H.
+    simpl in H.
+    assert (st = update st X (st X)).
+      apply functional_extensionality. intro. 
+      rewrite update_same; reflexivity.
+    rewrite -> H0 at 1.
+    rewrite -> (H st).
+    constructor.
+Qed.
+       
+
 (** [] *)
 
 (* ####################################################### *)
