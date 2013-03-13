@@ -1,3 +1,5 @@
+(* Ayaka Nonaka & Josh Wilson *) (* 6 hours *)
+
 (** * Equiv: Program Equivalence *)
 
 
