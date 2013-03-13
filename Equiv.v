@@ -1537,9 +1537,36 @@ Definition pYX :=
 
 Theorem pXY_cequiv_pYX :
   cequiv pXY pYX \/ ~cequiv pXY pYX.
-Proof. (* FILL IN HERE *) Admitted.
+Proof.
+  left.
+  unfold cequiv.
+  unfold pXY, pYX.
+  intros st st'.
+  split.
+  Case "->".
+    intros H.
+    inversion H. subst.
+    inversion H2. subst.
+    inversion H5. subst.
+    assert (update (update st X n) Y n0 = update (update st Y n0) X n).
+      apply functional_extensionality. 
+      intro x. apply update_permute. reflexivity.
+    rewrite H0.
+    apply E_Seq with (update st Y n0). apply E_Havoc. apply E_Havoc.
+  Case "<-".
+    intros H.
+    inversion H. subst.
+    inversion H2. subst.
+    inversion H5. subst.
+    assert (update (update st Y n) X n0 = update (update st X n0) Y n).
+      apply functional_extensionality. 
+      intro x. apply update_permute. reflexivity.
+    rewrite H0.
+    apply E_Seq with (update st X n0). apply E_Havoc. apply E_Havoc.
+Qed.
 
 (** **** Exercise: 4 stars, optional (havoc_copy) *)
+
 (** Are the following two programs equivalent? *)
 
 Definition ptwice :=
