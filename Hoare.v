@@ -448,7 +448,7 @@ Proof.
     arithmetic expression [a], and your counterexample needs to
     exhibit an [a] for which the rule doesn't work. *)
 
-(* FILL IN HERE *)
+(* X = X + 1 *)
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (hoare_asgn_fwd) *)
