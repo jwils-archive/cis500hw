@@ -1,3 +1,4 @@
+(* Ayaka Nonaka & Joshua Wilson - 7 hours *)
 (** * Equiv: Program Equivalence *)
 
 
