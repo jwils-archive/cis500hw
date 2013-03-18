@@ -822,14 +822,14 @@ Qed.
 *)
 
 Definition swap_program : com :=
-  (* FILL IN HERE *) admit.
+  Z ::= (AId X); X ::= (AId Y); Y ::= (AId Z).
 
 Theorem swap_exercise :
   {{fun st => st X <= st Y}} 
   swap_program
   {{fun st => st Y <= st X}}.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  Admitted.
 (** [] *)
 
 (** **** Exercise: 3 stars (hoarestate1) *)
