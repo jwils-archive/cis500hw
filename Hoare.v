@@ -421,14 +421,14 @@ Proof.
        {{ 0 <= X /\ X <= 5 }}
    ...into formal statements and use [hoare_asgn] to prove them. *)
 
-Example hoare_asgn_example1 :
+Example hoare_asgn_examples1 :
   {{(fun st => st X <= 5) [X |-> (APlus (AId X) (ANum 1))]}}
   (X ::= (APlus (AId X) (ANum 1)))
   {{fun st => st X <= 5}}.
 Proof.
   apply hoare_asgn.  Qed.
 
-Example hoare_asgn_example2 :
+Example hoare_asgn_examples2 :
   {{(fun st => 0 <= st X /\ st X <= 5) [X |-> (ANum 3)]}}
   (X ::= (ANum 3))
   {{fun st => 0 <= st X /\ st X <= 5}}.
@@ -695,7 +695,25 @@ Qed.
    ...into formal statements and use [hoare_asgn] and
    [hoare_consequence_pre] to prove them. *)
 
-(* FILL IN HERE *)
+Example hoare_asgn_examples_2_1 :
+  {{(fun st => (st X) + 1 <= 5)}}
+  (X ::= (APlus (AId X) (ANum 1)))
+  {{fun st => st X <= 5}}.
+Proof.
+  eapply hoare_consequence_pre.
+  apply hoare_asgn. unfold assn_sub.
+  unfold update. simpl. intros A. intros B.
+  assumption. Qed.
+
+Example hoare_asgn_examples_2_2 :
+  {{(fun st => (0 <= 3 /\ 3 <= 5))}}
+  (X ::= (ANum 3))
+  {{fun st => 0 <= (st X) /\ (st X) <= 5}}.
+Proof.
+  eapply hoare_consequence_pre.
+  apply hoare_asgn. unfold assn_sub.
+  unfold update. simpl. intros A. intros B.
+  assumption. Qed.
 (** [] *)
 
 (* ####################################################### *)
