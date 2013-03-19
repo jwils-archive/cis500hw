@@ -1055,7 +1055,12 @@ Inductive ceval : com -> state -> state -> Prop :=
                   c1 / st || st' ->
                   (WHILE b1 DO c1 END) / st' || st'' ->
                   (WHILE b1 DO c1 END) / st || st''
-(* FILL IN HERE *)
+   | E_IF1True : forall (b1 : bexp) (st st' : state) (c1 : com),
+                 beval st b1 = true -> 
+                 c1 / st || st' -> (IF1 b1 THEN c1 FI) / st || st'
+   | E_IF1False : forall (b1 : bexp) (st st' : state) (c1 : com),
+                 beval st b1 = false -> 
+                 SKIP / st || st' -> (IF1 b1 THEN c1 FI) / st || st'
 
   where "c1 '/' st '||' st'" := (ceval c1 st st').
 
@@ -1064,7 +1069,7 @@ Tactic Notation "ceval_cases" tactic(first) ident(c) :=
   [ Case_aux c "E_Skip" | Case_aux c "E_Ass" | Case_aux c "E_Seq"
   | Case_aux c "E_IfTrue" | Case_aux c "E_IfFalse"
   | Case_aux c "E_WhileEnd" | Case_aux c "E_WhileLoop"
-  (* FILL IN HERE *)
+  | Case_aux c "E_IF1True" | Case_aux c "E_IF1False"
   ].
 
 (** Now we repeat (verbatim) the definition and notation of Hoare triples. *)
@@ -1084,7 +1089,21 @@ Notation "{{ P }}  c  {{ Q }}" := (hoare_triple P c Q)
     for one-sided conditionals. Try to come up with a rule that is
     both sound and as precise as possible. *)
 
-(* FILL IN HERE *)
+Theorem hoare_if1 : forall P Q c1 b,
+     {{fun st => P st /\ bassn b st}} c1 {{Q}} ->
+     {{fun st => P st /\ ~(bassn b st)}} SKIP {{Q}} ->
+     {{P}} (IF1 b THEN c1 FI) {{Q}}.
+Proof.
+  intros P Q c1 b HTrue HFalse st st' HE HP.
+  inversion HE.
+  Case "b is true".
+    apply (HTrue st st'). assumption.
+    split; try apply bexp_eval_true; assumption.
+  Case "b is false".
+    apply (HFalse st st').
+    assumption.
+    split; try apply bexp_eval_false; assumption.
+Qed.
 
 (** For full credit, prove formally that your rule is precise enough
     to show the following valid Hoare triple:
@@ -1106,7 +1125,9 @@ Lemma hoare_if1_good :
     X ::= APlus (AId X) (AId Y)
   FI
   {{ fun st => st X = st Z }}.
-Proof. (* FILL IN HERE *) Admitted.
+Proof.
+  Admitted.
+  
 
 End If1.
 (** [] *)
