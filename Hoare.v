@@ -847,7 +847,8 @@ Qed.
          {{fun st => st Y = n}}.
 *)
 
-(* FILL IN HERE *)
+If the arithmetic expression 'a' depends on X, Y might not equal 'n',
+since the value of 'a' would changed since we update X to be 3.
 (** [] *)
 
 (* ####################################################### *) 
