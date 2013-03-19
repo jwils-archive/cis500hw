@@ -829,8 +829,15 @@ Theorem swap_exercise :
   swap_program
   {{fun st => st Y <= st X}}.
 Proof.
-  Admitted.
-(** [] *)
+  eapply hoare_seq. eapply hoare_seq.
+  eapply hoare_consequence_pre. eapply hoare_asgn.
+    intros st. intros H. unfold assn_sub. simpl. rewrite update_eq.
+    apply H.
+   eapply hoare_consequence_pre. apply hoare_asgn.
+    intros st. intros H. unfold assn_sub. simpl. apply H.
+  eapply hoare_consequence_pre. apply hoare_asgn.
+    intros st H. unfold assn_sub. simpl. apply H.
+Qed.
 
 (** **** Exercise: 3 stars (hoarestate1) *)
 (** Explain why the following proposition can't be proven:
