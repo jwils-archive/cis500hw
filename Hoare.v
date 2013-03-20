@@ -1090,6 +1090,17 @@ Notation "{{ P }}  c  {{ Q }}" := (hoare_triple P c Q)
     both sound and as precise as possible. *)
 
 Theorem hoare_if1 : forall P Q c1 b,
+    {{P}} (IFB b THEN c1 ELSE SKIP FI) {{Q}} ->
+       {{P}} (IF1 b THEN c1 FI) {{Q}}.
+Proof.
+    intros P Q c1 b.
+    intros H0 st st' H1. apply H0. inversion H1.
+    apply E_IfTrue. assumption. assumption.
+    apply E_IfFalse. assumption. assumption.
+Qed.
+
+(****** 
+Theorem hoare_if1 : forall P Q c1 b,
      {{fun st => P st /\ bassn b st}} c1 {{Q}} ->
      {{fun st => P st /\ ~(bassn b st)}} SKIP {{Q}} ->
      {{P}} (IF1 b THEN c1 FI) {{Q}}.
@@ -1104,6 +1115,7 @@ Proof.
     assumption.
     split; try apply bexp_eval_false; assumption.
 Qed.
+***)
 
 (** For full credit, prove formally that your rule is precise enough
     to show the following valid Hoare triple:
@@ -1119,6 +1131,24 @@ Qed.
     need to copy here the rules you find necessary. *)
 
 
+Theorem hoare_if : forall P Q b c1 c2,
+  {{fun st => P st /\ bassn b st}} c1 {{Q}} ->
+  {{fun st => P st /\ ~(bassn b st)}} c2 {{Q}} ->
+  {{P}} (IFB b THEN c1 ELSE c2 FI) {{Q}}.
+Proof.
+  intros P Q b c1 c2 HTrue HFalse st st' HE HP.
+  inversion HE; subst. 
+  Case "b is true".
+    apply (HTrue st st'). 
+      assumption. 
+      split. assumption. 
+             apply bexp_eval_true. assumption.
+  Case "b is false".
+    apply (HFalse st st'). 
+      assumption. 
+      split. assumption.
+             apply bexp_eval_false. assumption. Qed.
+
 Lemma hoare_if1_good :
   {{ fun st => st X + st Y = st Z }}
   IF1 BNot (BEq (AId Y) (ANum 0)) THEN
@@ -1126,8 +1156,59 @@ Lemma hoare_if1_good :
   FI
   {{ fun st => st X = st Z }}.
 Proof.
-  Admitted.
+  apply hoare_if1. 
+  apply hoare_if.
+Admitted.
   
+(*** starting to desprately try stuff
+   eapply hoare_consequence_pre. apply hoare_asgn.
+  remember (X ::= APlus (AId X) (AId Y)) as comm.
+  intros st something. unfold bassn. simpl. 
+  simpl.
+  intros st' st'' st'''.
+  destruct (st' Y).
+  intros H0.
+  destruct H0.
+   in H0.
+***)   
+
+
+(***** OLD CRAP
+Lemma hoare_if1_good :
+  {{ fun st => st X + st Y = st Z }}
+  IF1 BNot (BEq (AId Y) (ANum 0)) THEN
+    X ::= APlus (AId X) (AId Y)
+  FI
+  {{ fun st => st X = st Z }}.
+Proof.
+ apply hoare_if1. eapply hoare_consequence_pre. 
+  Case "Then c".
+    intros st. unfold bassn, assn_sub, update, assert_implies; simpl.
+     simpl. 
+  inversion H0. apply eq_true_false_abs in H2. contradiction.
+  reflexivity.
+  
+ apply H2. destruct H2. apply ex_falso_quodlibet.
+  inversion H2. simpl in H1. simpl in H0.
+    simpl. intros
+   inversion H2. apply (H st st').
+apply hoare_asgn.
+  Case "then c".
+  
+  intros st H. 
+     
+    simpl. intros st _ st' st'' H H2. .  
+  Case "Else".
+    eapply hoare_consequence_pre. apply hoare_asgn.
+    unfold assn_sub, update, assert_implies.
+    simpl; intros st _. omega.
+  eapply hoare_consequence_pre.
+  simpl.
+  apply hoare_if1. unfold assn_sub.
+  unfold update. simpl. intros A. intros B.
+  assumption. 
+Qed.
+***)  
 
 End If1.
 (** [] *)
@@ -1223,7 +1304,7 @@ Example while_example :
   DO X ::= APlus (AId X) (ANum 1) END
     {{fun st => st X = 3}}.
 Proof.
-  eapply hoare_consequence_post. 
+  eapply hoare_consequence_post.
   apply hoare_while. 
   eapply hoare_consequence_pre. 
   apply hoare_asgn. 
