@@ -1,3 +1,5 @@
+(* Ayaka Nonaka & Joshua Wilson (10 hours) *)
+(* I know it said copy the functions you need for if1 but more clarity on what that implies would have saved a lot of time.*)
 (** * Hoare: Hoare Logic (Part I) *)
 
 Require Export Imp.
@@ -1090,6 +1092,17 @@ Notation "{{ P }}  c  {{ Q }}" := (hoare_triple P c Q)
     both sound and as precise as possible. *)
 
 Theorem hoare_if1 : forall P Q c1 b,
+    {{P}} (IFB b THEN c1 ELSE SKIP FI) {{Q}} ->
+       {{P}} (IF1 b THEN c1 FI) {{Q}}.
+Proof.
+    intros P Q c1 b.
+    intros H0 st st' H1. apply H0. inversion H1.
+    apply E_IfTrue. assumption. assumption.
+    apply E_IfFalse. assumption. assumption.
+Qed.
+
+(*****
+Theorem hoare_if1 : forall P Q c1 b,
      {{fun st => P st /\ bassn b st}} c1 {{Q}} ->
      {{fun st => P st /\ ~(bassn b st)}} SKIP {{Q}} ->
      {{P}} (IF1 b THEN c1 FI) {{Q}}.
@@ -1104,7 +1117,7 @@ Proof.
     assumption.
     split; try apply bexp_eval_false; assumption.
 Qed.
-
+***)
 (** For full credit, prove formally that your rule is precise enough
     to show the following valid Hoare triple:
   {{ X + Y = Z }}
@@ -1119,6 +1132,68 @@ Qed.
     need to copy here the rules you find necessary. *)
 
 
+Theorem hoare_if : forall P Q b c1 c2,
+  {{fun st => P st /\ bassn b st}} c1 {{Q}} ->
+  {{fun st => P st /\ ~(bassn b st)}} c2 {{Q}} ->
+  {{P}} (IFB b THEN c1 ELSE c2 FI) {{Q}}.
+Proof.
+  intros P Q b c1 c2 HTrue HFalse st st' HE HP.
+  inversion HE; subst. 
+  Case "b is true".
+    apply (HTrue st st'). 
+      assumption. 
+      split. assumption. 
+             apply bexp_eval_true. assumption.
+  Case "b is false".
+    apply (HFalse st st'). 
+      assumption. 
+      split. assumption.
+             apply bexp_eval_false. assumption. Qed.
+Theorem hoare_consequence_pre : forall (P P' Q : Assertion) c,
+  {{P'}} c {{Q}} ->
+  P ->> P' ->
+  {{P}} c {{Q}}.
+Proof.
+  intros P P' Q c Hhoare Himp.
+  intros st st' Hc HP. apply (Hhoare st st'). 
+  assumption. apply Himp. assumption. Qed.
+
+Theorem hoare_consequence_post : forall (P Q Q' : Assertion) c,
+  {{P}} c {{Q'}} ->
+  Q' ->> Q ->
+  {{P}} c {{Q}}.
+Proof.
+  intros P Q Q' c Hhoare Himp.
+  intros st st' Hc HP. 
+  apply Himp.
+  apply (Hhoare st st'). 
+  assumption. assumption. Qed.
+
+Theorem hoare_consequence : forall (P P' Q Q' : Assertion) c,
+  {{P'}} c {{Q'}} ->
+  P ->> P' ->
+  Q' ->> Q ->
+  {{P}} c {{Q}}.
+Proof.
+  intros P P' Q Q' c Hht HPP' HQ'Q.
+  apply hoare_consequence_pre with (P' := P').
+  apply hoare_consequence_post with (Q' := Q').
+  assumption. assumption. assumption.  Qed.
+
+Theorem hoare_skip : forall P,
+     {{P}} SKIP {{P}}.
+Proof.
+  intros P st st' H HP. inversion H. subst.
+  assumption.  Qed.
+
+Theorem hoare_asgn : forall Q X a,
+  {{Q [X |-> a]}} (X ::= a) {{Q}}.
+Proof.
+  unfold hoare_triple.
+  intros Q X a st st' HE HQ.
+  inversion HE. subst.
+  unfold assn_sub in HQ. assumption.  Qed.
+
 Lemma hoare_if1_good :
   {{ fun st => st X + st Y = st Z }}
   IF1 BNot (BEq (AId Y) (ANum 0)) THEN
@@ -1126,8 +1201,24 @@ Lemma hoare_if1_good :
   FI
   {{ fun st => st X = st Z }}.
 Proof.
-  Admitted.
-  
+  apply hoare_if1.
+  apply hoare_if. 
+  Case "THEN C".
+  eapply hoare_consequence_pre.
+  apply hoare_asgn.
+  unfold bassn, assn_sub, update, assert_implies.
+  simpl. intros st. intros [H0 _]. assumption.
+  Case "SKIP".
+  eapply hoare_consequence_pre. apply hoare_skip.
+  intros st.
+  unfold bassn, assn_sub, update, assert_implies. simpl.
+  destruct (st Y). omega. simpl.
+  assert (true <> true -> False). 
+    unfold not.
+    intros H.  apply H. reflexivity.
+  intros [_ H1].
+  contradiction.
+Qed.
 
 End If1.
 (** [] *)
@@ -1223,7 +1314,7 @@ Example while_example :
   DO X ::= APlus (AId X) (ANum 1) END
     {{fun st => st X = 3}}.
 Proof.
-  eapply hoare_consequence_post. 
+  eapply hoare_consequence_post.
   apply hoare_while. 
   eapply hoare_consequence_pre. 
   apply hoare_asgn. 
