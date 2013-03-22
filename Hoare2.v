@@ -504,7 +504,24 @@ Proof.
       {{ Y = m }}
     Write an informal decorated program showing that this is correct. *)
 
-(* FILL IN HERE *)
+    (*
+
+        {{ X = m }}
+      Y ::= 0;
+        {{ X + Y = m }}
+      WHILE X <> 0 DO
+          {{ X + Y = m /\ X <> 0 }} ->>
+          {{ (X - 1) + (Y + 1) = m }}
+        X ::= X - 1;
+          {{ X + (Y + 1) = m }}
+        Y ::= Y + 1;
+          {{ X + Y = m }}
+      END
+        {{ X + Y = m /\ X = 0 }} ->>
+        {{ Y = m }}
+
+     *)
+
 (** [] *)
 
 (* ####################################################### *)
