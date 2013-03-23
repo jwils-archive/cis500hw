@@ -504,24 +504,7 @@ Proof.
       {{ Y = m }}
     Write an informal decorated program showing that this is correct. *)
 
-    (*
-
-        {{ X = m }}
-      Y ::= 0;
-        {{ X + Y = m }}
-      WHILE X <> 0 DO
-          {{ X + Y = m /\ X <> 0 }} ->>
-          {{ (X - 1) + (Y + 1) = m }}
-        X ::= X - 1;
-          {{ X + (Y + 1) = m }}
-        Y ::= Y + 1;
-          {{ X + Y = m }}
-      END
-        {{ X + Y = m /\ X = 0 }} ->>
-        {{ Y = m }}
-
-     *)
-
+(* FILL IN HERE *)
 (** [] *)
 
 (* ####################################################### *)
@@ -776,18 +759,18 @@ Proof.
 
     Fill in the blanks in following decorated program:
     {{ X = m }} ->>
-    {{                                      }}
+    {{ 1 = m! / X ! }}
   Y ::= 1;
-    {{                                      }}
+    {{ Y  = m! / X! }}
   WHILE X <> 0
-  DO   {{                                      }} ->>
-       {{                                      }}
+  DO   {{ Y = m! / X! /\ X <> 0 }} ->>
+       {{ Y * X = m! / (X - 1)! }}
      Y ::= Y * X;
-       {{                                      }}
+       {{ Y = m! / (X - 1)! }}
      X ::= X - 1
-       {{                                      }}
+       {{ Y = m! / X! }}
   END
-    {{                                      }} ->>
+    {{ Y = m! / X! /\ X = 0 }} ->>
     {{ Y = m! }}
 *)
 
@@ -808,24 +791,24 @@ Proof.
   plus, as usual, standard high-school algebra.
 
   {{ True }} ->>
-  {{                    }}
+  {{ 0 = min a b - min a b }}
   X ::= a;
-  {{                       }}
+  {{ 0 = min a b - min X b }}
   Y ::= b;
-  {{                       }}
+  {{ 0 = min a b - min X Y }}
   Z ::= 0;
-  {{                       }}
-  WHILE (X <> 0 /\ Y <> 0) DO
-  {{                                     }} ->>
-  {{                                }}
+  {{ Z = min a b - min X Y }}
+  WHILE (X <> 0 \u2227 Y <> 0) DO
+  {{ Z = (min a b - min X Y) /\ (X <> 0 /\ Y <> 0 }} ->>
+  {{ Z + 1 = min a b - min (X - 1) (Y - 1) }}
   X := X - 1;
-  {{                            }}
+  {{ Z + 1 = min a b - min X (Y - 1) }}
   Y := Y - 1;
-  {{                        }}
+  {{ Z + 1 = min a b - min X Y }}
   Z := Z + 1;
-  {{                       }}
+  {{ Z = min a b - min X Y }}
   END
-  {{                            }} ->>
+  {{ Z = (min a b - min X Y) /\ (X = 0 \/ Y =0) }} ->>
   {{ Z = min a b }}
 *)
 
@@ -850,32 +833,32 @@ Proof.
     following decorated program.
 
     {{ True }} ->>
-    {{                                        }}
+    {{ c = 0 + 0 + c }}
   X ::= 0;
-    {{                                        }}
+    {{ c = X + 0 + c }}
   Y ::= 0;
-    {{                                        }}
+    {{ c = X + Y + c }}
   Z ::= c;
-    {{                                        }}
+    {{ Z = X + Y + c }}
   WHILE X <> a DO
-      {{                                        }} ->>
-      {{                                        }}
+      {{ Z = X + Y + c /\ X <> a }} ->>
+      {{ Z + 1 = (X + 1) + Y + c }}
     X ::= X + 1;
-      {{                                        }}
+      {{ Z + 1 = X + Y + c }}
     Z ::= Z + 1
-      {{                                        }}
+      {{ Z = X + Y + c }}
   END;
-    {{                                        }} ->>
-    {{                                        }}
+    {{ Z = X + Y + c /\ X = a }} ->>
+    {{ Z = a + Y + c }}
   WHILE Y <> b DO
-      {{                                        }} ->>
-      {{                                        }}
+      {{ Z = a + Y + c /\ Y <> b }} ->>
+      {{ Z + 1 = a + (Y + 1) + c }}
     Y ::= Y + 1;
-      {{                                        }}
+      {{ Z + 1 = a + Y + c }}
     Z ::= Z + 1
-      {{                                        }}
+      {{ Z = a + Y + c }}
   END
-    {{                                        }} ->>
+    {{ Z = a + Y + c /\ Y = b }} ->>
     {{ Z = a + b + c }}
 *)
 
