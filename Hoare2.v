@@ -1,3 +1,6 @@
+(** Ayaka Nonaka & Joshua Wilson **)
+(** 2 hours **)
+
 (** * Hoare2: Hoare Logic, Part II *)
 
 Require Export Hoare.
@@ -773,7 +776,7 @@ Proof.
 
     Fill in the blanks in following decorated program:
     {{ X = m }} ->>
-    {{ 1 = m! / X ! }}
+    {{ 1 = m! / X! }}
   Y ::= 1;
     {{ Y  = m! / X! }}
   WHILE X <> 0
@@ -781,7 +784,7 @@ Proof.
        {{ Y * X = m! / (X - 1)! }}
      Y ::= Y * X;
        {{ Y = m! / (X - 1)! }}
-     X ::= X - 1
+     X ::= X - 1;
        {{ Y = m! / X! }}
   END
     {{ Y = m! / X! /\ X = 0 }} ->>
