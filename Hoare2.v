@@ -506,7 +506,7 @@ Proof.
     END
       {{ Y = m }}
     Write an informal decorated program showing that this is correct. *)
-
+(** [
       {{ X = m }} ->>
       {{ 0 + X = m }}
     Y ::= 0;
@@ -521,6 +521,9 @@ Proof.
     END
       {{ Y + X = m /\ X = 0}} ->>
       {{ Y = m }}
+
+
+] *)
  
 (** [] *)
 
