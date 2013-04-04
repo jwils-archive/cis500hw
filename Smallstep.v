@@ -220,7 +220,8 @@ Example test_step_2 :
           (C 2) 
           (C (0 + 3))).
 Proof. 
-  (* FILL IN HERE *) Admitted.
+  apply ST_Plus2. apply ST_Plus2. apply ST_PlusConstConst.
+  Qed.
 (** [] *)
 
 
