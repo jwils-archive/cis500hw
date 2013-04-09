@@ -681,7 +681,7 @@ Inductive step : tm -> tm -> Prop :=
 Definition bool_step_prop1 :=
   tfalse ==> tfalse.
 
-(* FILL IN HERE *)
+(* NO *)
 
 Definition bool_step_prop2 :=
      tif
@@ -690,8 +690,7 @@ Definition bool_step_prop2 :=
        (tif tfalse tfalse tfalse)
   ==> 
      ttrue.
-
-(* FILL IN HERE *)
+(* NO *)
 
 Definition bool_step_prop3 :=
      tif
@@ -703,8 +702,12 @@ Definition bool_step_prop3 :=
        ttrue
        (tif ttrue ttrue ttrue)
        tfalse.
+Example bool_step_prop3_holds : bool_step_prop3.
+Proof.
+  apply ST_If. apply ST_IfTrue.
+Qed.
 
-(* FILL IN HERE *)
+(* YES *)
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (progress_bool) *)
@@ -721,8 +724,7 @@ Proof.
 Theorem step_deterministic :
   deterministic step.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+(** [] *) Admitted.
 
 Module Temp5. 
 
@@ -755,7 +757,8 @@ Inductive step : tm -> tm -> Prop :=
   | ST_If : forall t1 t1' t2 t3,
       t1 ==> t1' ->
       tif t1 t2 t3 ==> tif t1' t2 t3
-(* FILL IN HERE *)
+  | ST_IfBothEqual : forall t1 t2,
+      tif t1 t2 t2 ==> t2
 
   where " t '==>' t' " := (step t t').
 (** [] *)
@@ -771,7 +774,8 @@ Definition bool_step_prop4 :=
 Example bool_step_prop4_holds : 
   bool_step_prop4.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  apply ST_IfBothEqual.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, optional (properties_of_altered_step) *)
@@ -972,7 +976,18 @@ Lemma test_multistep_4:
         (C 0)
         (C (2 + (0 + 3))).
 Proof.
-  (* FILL IN HERE *) Admitted.
+   apply multi_step with
+       (P
+         (C 0)
+           (P
+           (C 2) 
+          (C (0 + 3)))).
+    apply ST_Plus2. apply v_const. 
+    apply ST_Plus2. apply v_const. apply ST_PlusConstConst.
+    apply multi_R.
+    apply ST_Plus2. apply v_const. apply ST_PlusConstConst.
+Qed.
+
 (** [] *)
 
 (* ########################################################### *)
@@ -1038,7 +1053,13 @@ Lemma multistep_congr_2 : forall t1 t2 t2',
      t2 ==>* t2' ->
      P t1 t2 ==>* P t1 t2'.
 Proof.
-  (* FILL IN HERE *) Admitted.
+    intros t1 t2 t2' H H2. multi_cases (induction H2) Case.
+    Case "multi_refl". apply multi_refl.
+    Case "multi_step". apply multi_step with (P t1 y).
+    apply ST_Plus2. apply H. apply H0.
+        apply IHmulti.
+Qed.
+     
 (** [] *)
 
 (** _Theorem_: The [step] function is normalizing -- i.e., for every
@@ -1138,6 +1159,11 @@ Theorem eval__multistep : forall t n,
     includes [==>]. *)
 
 Proof.
+  intros t n H.
+  tm_cases (induction t) Case. inversion H. apply multi_refl. 
+  apply multi_R. inversion H4. apply ST_PlusConstConst.
+  rewrite -> H3. rewrite -> H5. inversion H4. subst. apply ST_PlusConstConst.
+ 
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
